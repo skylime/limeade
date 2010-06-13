@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Ressources</h1>
+{% if limits %}
+<table>
+{% for groupname, limitgroup in limits.items %}
+	<tr><th colspan="4">{{ groupname }}</td></tr>
+	{% for limit in limitgroup %}
+        <tr>
+        <td>{{ limit.name }}:</td>
+		<td style="text-align: right">{% if limit.utilization %}{{ limit.utilization }} /{% else %}&nbsp;{% endif %}</td>
+		<td style="text-align: right">{{ limit.value }}</td>
+		<td>{{ limit.help_text }}</td>
+        </tr>
+	{% endfor %}
+{% endfor %}
+</table>
+{% else %}
+<p>Please buy some Products ;-)</p>
+{% endif %}
+{% endblock %}

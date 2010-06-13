@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Customers</h1>
+
+<p class="action_box">
+<span class="lime action_link">+</span><a href="{% url limeade_system_customer_add %}">Add a new Customer</a>
+</p>
+{% if object_list %}
+<table>
+<tr><th>Name</th><th>Login</th><th>Domains</th></tr>
+{% for customer in object_list %}
+        <tr>
+        <td><a href="{% url limeade_system_customer_view customer.username %}">{{ customer.first_name }} {{ customer.last_name }}</a></td>
+		<td>{{ customer.user.username }}</td>
+		<td></td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>You don't have any customers yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Email Accounts</h1>
+
+<p class="action_box">
+<span class="lime action_link">+</span><a href="{% url limeade_mail_account_add %}">Add a new Email Account</a>
+</p>
+{% if object_list %}
+<table>
+<tr><th>Account</th><th>&nbsp;</th></tr>
+{% for account in object_list %}
+        <tr>
+        <td><a href="{% url limeade_mail_account_edit account.pk %}">{{ account }}</a></td>
+		<td><a href="{% url limeade_mail_account_delete account.pk %}" class="action_delete">Delete</a></td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>You don't have any Accounts yet.</p>
+{% endif %}
+{% endblock %}
