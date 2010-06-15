@@ -1,13 +1,15 @@
-from django.shortcuts import get_object_or_404, render_to_response, redirect
-from django.contrib.auth.decorators import login_required, permission_required
-from django.template import RequestContext
-from django.views.generic.list_detail import object_list, object_detail
-from django.views.generic.create_update import update_object
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm
-from django.forms.models import inlineformset_factory
-from django.db.models import Sum
 from django.contrib.auth.models import User
+from django.contrib.auth.views import redirect_to_login
+from django.core.urlresolvers import reverse
+from django.db.models import Sum
+from django.forms.models import inlineformset_factory
+from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.template import RequestContext
+from django.views.generic.create_update import update_object
+from django.views.generic.list_detail import object_list, object_detail
 from models import Person, Product, Contract, Domain
 from forms import PersonForm, PersonAddForm, ProductForm, ContractForm, DomainForm
 from utils import get_limitsets
@@ -128,8 +130,8 @@ def customer_edit(request, slug):
 
 @permission_required('system.reseller')
 def customer_delete(request, slug):
+	# TODO: permission checking
 	get_object_or_404(Person, user__username = slug).delete()
-	# TODO: cleanup related objects
 	return redirect('limeade_system_customer_list')
 
 
@@ -200,12 +202,11 @@ def contract_customize(request, slug, contract_id):
 
 @permission_required('system.reseller')
 def contract_delete(request, slug, contract_id):
-	# TODO: permission checks
-	get_object_or_404(Contract, pk = contract_id).delete()
-	# TODO: cleanup related objects
+	c = get_object_or_404(Contract, pk = contract_id)
+	if c.person.get_profile().parent != request.user:
+		return redirect_to_login(reverse(contract_delete))
+	c.delete()
 	return redirect('limeade_system_customer_view', slug = slug)
-
-
 
 
 def domain_add(request, slug, contract_id):
