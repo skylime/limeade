@@ -171,28 +171,31 @@ def contract_customize(request, slug, contract_id):
 	u = get_object_or_404(User, username = slug)
 	c = get_object_or_404(Contract, pk = contract_id)
 	p = c.product
-	if not p.personalized:
-		# copy the product
-		p.id = None
-		p.personalized = True
-		p.name += ' - ' + u.username
-		p.save()
+		
+	form = ProductForm(request.POST or None, instance=p)
+	
+	limitsets = []
+	for limitset in get_limitsets():
+		LimitInlineFormSet = inlineformset_factory(Product, limitset.model, can_delete=False)
+		limitsets += [LimitInlineFormSet(request.POST or None, instance=p)]
+		# workaround, as templates can't access private members
+		limitsets[-1].verbose_name = limitsets[-1].model._meta.verbose_name
+	
+	if form.is_valid() and all([x.is_valid() for x in limitsets]):
+		if not p.personalized:
+			p.id = None
+			p.personalized = True
+		p = form.save()
 		c.product = p
 		c.save()
-		
-		# copy limitsets
-		for limitset in get_limitsets():
-			try:
-				l = getattr(p, limitset.get_accessor_name()).get()
-			except:
-				continue
-			l.id = None
-			l.save()
-			setattr(p, limitset.get_accessor_name(), l)
-			p.save()
-		
-		
-	return redirect('limeade_system_product_edit', slug=c.id)
+		for l in limitsets:
+			data = l.forms[0].cleaned_data
+			data.pop('id')
+			data['product'] = p
+			l.model(**data).save()
+		return redirect('limeade_system_customer_view', slug = slug)
+	return render_to_response("limeade_system/product_edit.html",
+		{"form": form, "limitsets": limitsets}, context_instance = RequestContext(request))
 	
 
 @permission_required('system.reseller')
@@ -279,7 +282,6 @@ def product_edit(request, slug, next='limeade_system_product_list'):
 @permission_required('system.reseller')
 def product_delete(request, slug):
 	get_object_or_404(Product, pk = slug).delete()
-	# TODO: cleanup related objects
 	return redirect('limeade_system_product_list')
 
 
