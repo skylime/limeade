@@ -1,5 +1,7 @@
 # Django settings for skylime_admin project.
 import os
+import djcelery
+djcelery.setup_loader()
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -93,7 +95,12 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'uni_form',
     'limeade.system',
+	'limeade.web',
     'limeade.mail',
+	'limeade.cloud',
+	'limeade.mysql',
+	'djcelery',
+	'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -108,6 +115,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 AUTH_PROFILE_MODULE = "system.person"
 LOGIN_REDIRECT_URL = '/system/'
 
+# site api key
+SITE_API_KEY = 'Ab1Tae1Iegh5iechahvi'
+
+# celery
+BROKER_HOST = "v1.local"
+BROKER_PORT = 5672
+BROKER_USER = "limade"
+BROKER_PASSWORD = "EimequuChuap8aa8ohyo"
+BROKER_VHOST = "limeade"
+
+CELERY_RESULT_BACKEND = "amqp"
+
+TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
 
 try: 
      from local_settings import * 

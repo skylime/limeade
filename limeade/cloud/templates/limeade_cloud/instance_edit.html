@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit Instance</h1>
+
+<form method="POST" enctype="multipart/form-data" action=".">
+	<table class="form">
+        {{ form.as_table }}
+	</table>
+        {% csrf_token %}
+        <input type="submit" value="Save"/>
+</form>
+
+{% endblock %}

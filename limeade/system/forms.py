@@ -11,9 +11,9 @@ class PersonForm(forms.Form):
 	
 class PersonAddForm(PersonForm):
 	username = forms.RegexField(
-		regex=r'^\w+$', max_length=30, widget=forms.TextInput(),
+		regex=r'^[a-zA-Z0-9-]+$', max_length=30, widget=forms.TextInput(),
 		label=_("Username"),
-		error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
+		error_messages={'invalid': _("This value must contain only letters, numbers and minus.")})
 	password = forms.CharField(widget=forms.PasswordInput(render_value=False), label=_("Password"))
 
 class ProductForm(forms.ModelForm):

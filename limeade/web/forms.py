@@ -1,16 +1,14 @@
 from django import forms
-from models import Account, Redirect
+from models import VHost, HTTPRedirect as Redirect
 
-class AccountForm(forms.ModelForm):
+class VHostForm(forms.ModelForm):
 	class Meta:
-		model = Account
+		model = VHost
 
-
-class AccountEditForm(forms.ModelForm):
+class VHostEditForm(forms.ModelForm):
 	class Meta:
-		model = Account
+		model = VHost
 		exclude = ('name', 'domain')
-		
 
 class RedirectForm(forms.ModelForm):
 	class Meta:

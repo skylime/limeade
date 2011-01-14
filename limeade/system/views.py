@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.forms.models import inlineformset_factory
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
@@ -14,17 +14,22 @@ from models import Person, Product, Contract, Domain
 from forms import PersonForm, PersonAddForm, ProductForm, ContractForm, DomainForm
 from utils import get_limitsets
 
-from limeade.mail.models import Limitset as MailLimitset
+#from limeade.mail.models import Limitset as MailLimitset
 
 @login_required
 def ressources(request):
 	limits = {}
 	for limitset in get_limitsets():
+		prefix = 'product__' + limitset.get_accessor_name()
+
+		# has the user any contract with this limitset?
+		if request.user.contract_set.aggregate(Count(prefix))[prefix + '__count'] < 1: continue
 		limits[limitset.model._meta.verbose_name] = []
+
 		for field in limitset.model._meta.fields:
 			if field.primary_key: continue
 			if field.name == 'product': continue
-			key = 'product__' + limitset.var_name + '__' + field.name
+			key = prefix + '__' + field.name
 			limits[limitset.model._meta.verbose_name] += [{
 				'name': field.verbose_name,
 				'help_text': field.help_text,

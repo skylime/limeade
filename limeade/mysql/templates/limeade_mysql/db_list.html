@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Databses</h1>
+
+<p class="action_box">
+<span class="lime action_link">+</span><a href="{% url limeade_mysql_db_add %}">Add a new MySQL Database</a>
+</p>
+{% if object_list %}
+<table>
+<tr><th>Database</th><th>&nbsp;</th></tr>
+{% for db in object_list %}
+        <tr>
+        <td><a href="{% url limeade_mysql_db_edit db.pk %}">{{ db }}</a></td>
+		<td><a href="{% url limeade_mysql_db_delete db.pk %}" class="action_delete">Delete</a></td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>You don't have any MySQL Databases yet.</p>
+{% endif %}
+{% endblock %}
