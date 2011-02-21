@@ -11,12 +11,18 @@
 <tr><th>Database</th><th>&nbsp;</th></tr>
 {% for db in object_list %}
         <tr>
-        <td><a href="{% url limeade_mysql_db_edit db.pk %}">{{ db }}</a></td>
-		<td><a href="{% url limeade_mysql_db_delete db.pk %}" class="action_delete">Delete</a></td>
+        <td><a href="{% url limeade_mysql_db_edit db.1 %}">{{ db.0 }}</a></td>
+		<td><a href="{% url limeade_mysql_db_delete db.1 %}" class="action_delete">Delete</a></td>
         </tr>
 {% endfor %}
 </table>
+<br />
+<p>
+To access your tables you can use <a href="http://v1.local/phpmyadmin/">phpMyAdmin</a>.
+</p>
+
 {% else %}
 <p>You don't have any MySQL Databases yet.</p>
 {% endif %}
+
 {% endblock %}

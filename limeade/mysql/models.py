@@ -12,6 +12,10 @@ class Limitset(models.Model):
 	@staticmethod
 	def utilization(user, ressource):
 		# todo
+		# MAX_QUERIES_PER_HOUR
+		# MAX_UPDATES_PER_HOUR
+		# MAX_CONNECTIONS_PER_HOUR
+		# MAX_USER_CONNECTIONS
 		return None
 		
 	class Meta:
