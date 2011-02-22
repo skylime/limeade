@@ -51,10 +51,11 @@ a {
 }
 
 #menu h4 {
-	margin: 1em;
+	margin: 0.7em 1em;
 }
 
 #menu ul {
+	margin: 0;
 	list-style: none;
 }
 
@@ -74,7 +75,7 @@ a {
 	padding: 1em;
 	padding-left: 2em;
 	margin-left: 14em;
-	min-height: 22em;
+	min-height: 30em;
 }
 
 .clear { clear: both;}

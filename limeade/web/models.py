@@ -47,3 +47,7 @@ class Limitset(models.Model):
 		
 	class Meta:
 		verbose_name = 'Web'
+
+
+def get_vhosts(user):
+	return VHost.objects.filter(domain__in=list(get_domains(user)))

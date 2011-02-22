@@ -9,6 +9,9 @@ class Account(models.Model):
 	domain   = models.ForeignKey(Domain)
 	password = models.CharField(max_length=default_length)
 	
+	class Meta:
+		unique_together = ('name', 'domain')
+	
 	def __unicode__(self):
 		return unicode(self.name) + '@' + unicode(self.domain)
 
@@ -17,6 +20,9 @@ class Redirect(models.Model):
 	name   = models.CharField(max_length=default_length)
 	domain = models.ForeignKey(Domain)
 	to     = models.CharField(max_length=default_length)
+	
+	class Meta:
+		unique_together = ('name', 'domain')
 	
 	def __unicode__(self):
 		return self.name + '@' + unicode(self.domain) + ' -> ' + self.to
