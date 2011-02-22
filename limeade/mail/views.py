@@ -18,7 +18,9 @@ def account_add(request):
 	form = AccountForm(request.POST or None)
 	form.fields['domain'].queryset = get_domains(request.user)
 	if form.is_valid():
-		form.save()
+		ac = form.save(commit=False)
+		ac.set_password(form.cleaned_data['password'])
+		ac.save()
 		return redirect('limeade_mail_account_list')
 	return render_to_response("limeade_mail/account_add.html",
 		{"form": form}, context_instance = RequestContext(request))
@@ -26,17 +28,22 @@ def account_add(request):
 @login_required	
 def account_edit(request, slug):
 	account = Account.objects.get(pk=slug)
+	if account.domain.owner() != request.user:
+		return redirect('limeade_mail_account_list')		
 	form = AccountEditForm(request.POST or None, instance=account)
 	if form.is_valid():
-		form.save()
+		ac = form.save(commit=False)
+		ac.set_password(form.cleaned_data['password'])
+		ac.save()
 		return redirect('limeade_mail_account_list')
 	return render_to_response("limeade_mail/account_edit.html",
 		{"form": form}, context_instance = RequestContext(request))
 
 @login_required
 def account_delete(request, slug):
-	# todo: permission checking
-	get_object_or_404(Account, pk = slug).delete()
+	ac = get_object_or_404(Account, pk = slug)
+	if ac.domain.owner() == request.user:
+		ac.delete()
 	return redirect('limeade_mail_account_list')
 	
 	
@@ -59,6 +66,8 @@ def redirect_add(request):
 @login_required	
 def redirect_edit(request, slug):
 	redirect = Redirect.objects.get(pk=slug)
+	if redirect.domain.owner() != request.user:
+		return redirect('limeade_mail_redirect_list')		
 	form = RedirectForm(request.POST or None, instance=redirect)
 	form.fields['domain'].queryset = get_domains(request.user)
 	if form.is_valid():
@@ -69,6 +78,8 @@ def redirect_edit(request, slug):
 
 @login_required
 def redirect_delete(request, slug):
-	# todo: permission checking
-	get_object_or_404(Redirect, pk = slug).delete()
-	return redirect('limeade_mail_redirect_list')	
+	r = get_object_or_404(Redirect, pk = slug)
+	if r.domain.owner() == request.user:
+		r.delete()
+	return redirect('limeade_mail_redirect_list')
+	

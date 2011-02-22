@@ -5,7 +5,7 @@ from models import Account
 class AccountForm(forms.ModelForm):
 	class Meta:
 		model = Account
-
+		widgets = {'password': PasswordInput(render_value=False),}
 
 class AccountEditForm(forms.ModelForm):
 	class Meta:

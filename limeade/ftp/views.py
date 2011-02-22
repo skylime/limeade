@@ -27,7 +27,7 @@ def account_add(request):
 @login_required	
 def account_edit(request, slug):
 	account = Account.objects.get(pk=slug)
-	if account.vhost.domain.owner() is not request.user:
+	if account.vhost.domain.owner() != request.user:
 		return redirect('limeade_ftp_account_list')
 	form = AccountEditForm(request.POST or None, instance=account)
 	if form.is_valid():

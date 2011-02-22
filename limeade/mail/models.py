@@ -1,6 +1,6 @@
 from django.db import models
 from limeade.system.models import Product, Domain
-from limeade.system.utils import get_domains
+from limeade.system.utils import get_domains, md5crypt, gen_salt
 
 default_length = 250
 
@@ -9,12 +9,15 @@ class Account(models.Model):
 	domain   = models.ForeignKey(Domain)
 	password = models.CharField(max_length=default_length)
 	
+	def set_password(self, password):
+		self.password = md5crypt(password, gen_salt())
+
+	def __unicode__(self):
+		return unicode(self.name) + '@' + unicode(self.domain)
+	
 	class Meta:
 		unique_together = ('name', 'domain')
 	
-	def __unicode__(self):
-		return unicode(self.name) + '@' + unicode(self.domain)
-
 
 class Redirect(models.Model):
 	name   = models.CharField(max_length=default_length)
