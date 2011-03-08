@@ -75,7 +75,7 @@ a {
 	padding: 1em;
 	padding-left: 2em;
 	margin-left: 14em;
-	min-height: 30em;
+	min-height: 32em;
 }
 
 .clear { clear: both;}
@@ -182,3 +182,8 @@ tr:hover {
 	background-color: #383838;
 }
 
+input[type=file] {
+	color: #ccc;
+	background-color: #333;
+	border: 1px solid #333;
+}

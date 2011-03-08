@@ -65,10 +65,10 @@ def redirect_add(request):
 
 @login_required	
 def redirect_edit(request, slug):
-	redirect = Redirect.objects.get(pk=slug)
-	if redirect.domain.owner() != request.user:
+	r = Redirect.objects.get(pk=slug)
+	if r.domain.owner() != request.user:
 		return redirect('limeade_mail_redirect_list')		
-	form = RedirectForm(request.POST or None, instance=redirect)
+	form = RedirectForm(request.POST or None, instance=r)
 	form.fields['domain'].queryset = get_domains(request.user)
 	if form.is_valid():
 		form.save()
