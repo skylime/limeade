@@ -13,21 +13,29 @@ class Node(models.Model):
 
 
 class Instance(models.Model):
-	name   = models.CharField(max_length=default_length)
-	node   = models.ForeignKey(Node)
-	owner  = models.ForeignKey(User)
-	active = models.BooleanField(default=False)
+	hostname = models.CharField(max_length=default_length)
+	sshkeys  = models.ManyToManyField('SSHKey', blank=True)
+	owner    = models.ForeignKey(User)
 	
-	def domain(self):
-		return self.owner.username + '-' + self.name
+	domain   = models.CharField(max_length=default_length, unique=True)
+	node     = models.ForeignKey(Node)
+
+	active   = models.BooleanField(default=False)
+	mac_addr = models.CharField(max_length=17, blank=True)
+	
 		
 	def __unicode__(self):
-		return unicode(self.node) + '/' + self.name
-	
-	class Meta:
-		unique_together = (("owner", "name"),)
+		return unicode(self.node) + '/' + self.domain
 		
 
+class SSHKey(models.Model):
+	comment = models.CharField(max_length=default_length)
+	key     = models.TextField()
+	owner   = models.ForeignKey(User)
+	
+	def __unicode__(self):
+		return self.comment
+		
 
 class Limitset(models.Model):
 	product = models.ForeignKey(Product, unique=True, related_name='limitset_cloud')

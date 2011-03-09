@@ -11,7 +11,7 @@
 <tr><th>Instance</th><th>State</th><th>&nbsp;</th></tr>
 {% for instance in object_list %}
         <tr>
-        <td><a href="{% url limeade_cloud_instance_edit instance.db.pk %}">{{ instance.db.name }}</a></td>
+        <td>{{ instance.db.hostname }}</td>
         <td>{{ instance.state }}</td>
 		<td>
 			{% if instance.db.active %}

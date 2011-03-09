@@ -7,8 +7,8 @@ from django.template import RequestContext
 from django.http import HttpResponse
 from anyjson import serialize
 from limeade.system.models import Product
-from models import Node, Instance
-from forms import InstanceForm
+from models import Node, Instance, SSHKey
+from forms import InstanceForm, SSHKeyForm
 from utils import get_best_node
 from celery.execute import send_task
 import libvirt
@@ -54,6 +54,10 @@ def instance_add(request):
 	form.fields['product'].queryset = Product.objects.filter(
 		Q(owner = request.user.get_profile().parent) | Q(owner = request.user),
 		limitset_cloud__isnull = False)
+	form.fields['sshkeys'].queryset = SSHKey.objects.filter(owner = request.user)
+	
+	
+	
 	if form.is_valid():
 		# manually enforce uniqueness (sqlite doesn't)
 		if Instance.objects.filter(name = form.cleaned_data['name'], owner= request.user).exists():
@@ -83,21 +87,12 @@ def instance_add(request):
 	return render_to_response("limeade_cloud/instance_add.html",
 		{"form": form}, context_instance = RequestContext(request))
 
-@login_required	
-def instance_edit(request, slug):
-	i = get_object_or_404(Instance, pk = slug)
-
-	#form = Instance(request.POST or None, instance=account)
-	#form.fields['domain'].queryset = get_domains(request.user)
-	#if form.is_valid():
-	#	form.save()
-	#	return redirect('limeade_mail_account_list')
-	return render_to_response("limeade_cloud/instance_edit.html",
-		{"form": None}, context_instance = RequestContext(request))
-
 @login_required
 def instance_delete(request, slug):
-	get_object_or_404(Instance, pk = slug).delete()
+	i = get_object_or_404(Instance, pk = slug)
+	if i.owner == request.user:
+		# send msg
+		i.delete()
 	return redirect('limeade_cloud_instance_list')
 
 	
@@ -139,8 +134,33 @@ def instance_restart(request, slug):
 		pass	
 	
 	return redirect('limeade_cloud_instance_list')
-	
 
+
+# ssh keys
+@login_required
+def sshkey_list(request):
+	return object_list(request, SSHKey.objects.filter(owner = request.user), template_name='limeade_cloud/sshkey_list.html')
+
+@login_required
+def sshkey_add(request):
+	form = SSHKeyForm(request.POST or None)
+	if form.is_valid():
+		key = form.save(commit=False)
+		key.owner = request.user
+		key.save()
+		return redirect('limeade_cloud_sshkey_list')
+	return render_to_response("limeade_cloud/sshkey_add.html",
+		{"form": form}, context_instance = RequestContext(request))
+
+@login_required
+def sshkey_delete(request, slug):
+	key = get_object_or_404(SSHKey, pk = slug)
+	if key.owner == request.user:
+		key.delete()
+	return redirect('limeade_cloud_sshkey_list')
+
+
+# API	
 def instance_activate(request):
 	if request.GET.get('site_api_key', '') != settings.SITE_API_KEY:
 		return HttpResponse(serialize({"status": "failure", "reason": 'wrong key'}), mimetype="application/json")

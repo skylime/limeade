@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>SSH Keys</h1>
+
+<p class="action_box">
+<span class="lime action_link">+</span><a href="{% url limeade_cloud_sshkey_add %}">Add a new SSH Public Key</a>
+</p>
+{% if object_list %}
+<table>
+<tr><th>SSH Key</th><th>&nbsp;</th></tr>
+{% for key in object_list %}
+        <tr>
+        <td>{{ key.comment }}</td>
+		<td>
+			<a href="{% url limeade_cloud_sshkey_delete key.pk %}" class="action_delete">Delete</a>
+		</td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>You don't have uploaded any SSH Keys yet.</p>
+{% endif %}
+{% endblock %}
