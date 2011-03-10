@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from limeade.system.models import Product
+from django.db import IntegrityError
 
 default_length = 250
 
@@ -23,6 +24,27 @@ class Instance(models.Model):
 	active   = models.BooleanField(default=False)
 	mac_addr = models.CharField(max_length=17, blank=True)
 	
+	def save(self, **kwargs):
+		owner = str(self.owner)
+		if not self.domain:
+			self.domain = owner + '-' + self.hostname.split('.')[0]
+		try:
+			super(Instance, self).save(**kwargs)
+		except IntegrityError:
+			i = 2
+			base_name = self.domain
+			while True:
+				self.domain = base_name + '-' + str(i)
+				try:
+					super(Instance, self).save(**kwargs)
+					return
+				except IntegrityError:
+					i += 1
+	
+	def generate_mac_addr(self):
+		fru = '46:52:55:'
+		bar = hex(0x424152 ^ self.pk)[2:]
+		self.mac_addr = fru + bar[0:2] + ':' + bar[2:4] + ':' + bar[4:6]
 		
 	def __unicode__(self):
 		return unicode(self.node) + '/' + self.domain

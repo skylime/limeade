@@ -31,7 +31,7 @@ def instance_list(request):
 		if i.active:
 			try:
 				c = libvirt.open(i.node.uri)
-				dom = c.lookupByName(i.domain())
+				dom = c.lookupByName(i.domain)
 				info = dom.info()
 			except:
 				info = [None]
@@ -56,32 +56,28 @@ def instance_add(request):
 		limitset_cloud__isnull = False)
 	form.fields['sshkeys'].queryset = SSHKey.objects.filter(owner = request.user)
 	
-	
-	
 	if form.is_valid():
-		# manually enforce uniqueness (sqlite doesn't)
-		if Instance.objects.filter(name = form.cleaned_data['name'], owner= request.user).exists():
-			return
-		
-		
 		limits = form.cleaned_data['product'].limitset_cloud.get()
-		n = get_best_node(limits.cpu_cores, limits.memory, limits.storage)
-		if not n:
-			# fail better
-			return
-		i = Instance(
-			name  = form.cleaned_data['name'],
-			node  = n,
-			owner = request.user
-		)
+		node = get_best_node(limits.cpu_cores, limits.memory, limits.storage)
+		if not node:
+			messages.add_message(request, messages.ERROR, 'We are currently over capacity. Please try again soon.')
+			return redirect('limeade_cloud_instance_list')
+			
+		i = Instance(hostname = form.cleaned_data['hostname'])
+		i.node    = node
+		i.owner   = request.user
+		i.save()	# generate a pk for the instance, so we can use the m2m field
+		i.sshkeys = form.cleaned_data['sshkeys']
+		i.generate_mac_addr()
 		i.save()
-		x = send_task("cloud.create_instance", kwargs={
+		send_task("cloud.create_instance", kwargs={
 				'base_image': form.cleaned_data['base_image'],
 				'cpu_cores':  limits.cpu_cores,
 				'memory':     limits.memory,
 				'storage':    limits.storage,
-				'name':       i.domain(),
+				'domain':     i.domain,
 				'instance':   i.pk,
+				'mac_addr':   i.mac_addr,
 			}, routing_key='limeade.cloud')
 		return redirect('limeade_cloud_instance_list')
 	return render_to_response("limeade_cloud/instance_add.html",
@@ -167,5 +163,11 @@ def instance_activate(request):
 	i = get_object_or_404(Instance, pk = request.GET['instance'])
 	i.active = True
 	i.save()
-	response = {"status": "success", "retval": i.domain()}
+	response = {"status": "success", "retval": i.domain}
+	return HttpResponse(serialize(response), mimetype="application/json")
+
+def instance_info(request, slug):
+	i = get_object_or_404(Instance, mac_addr = slug)
+	response = {'hostname': i.hostname}
+	response['ssh_keys'] = [k.key for k in i.sshkeys.all()]
 	return HttpResponse(serialize(response), mimetype="application/json")
