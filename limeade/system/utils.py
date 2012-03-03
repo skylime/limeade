@@ -1,4 +1,3 @@
-from django.db.models.query import CollectedObjects
 from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import User
 from models import Product, Contract, Domain
