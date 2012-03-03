@@ -79,7 +79,7 @@ class Limitset(models.Model):
 		if ressource == 'accounts':
 			return VHost.objects.filter(domain__in=list(domains)).count()
 		if ressource == 'redirects':
-			return Redirect.objects.filter(domain__in=list(domains)).count()
+			return HTTPRedirect.objects.filter(domain__in=list(domains)).count()
 		return None
 		
 	class Meta:
