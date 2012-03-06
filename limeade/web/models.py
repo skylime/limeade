@@ -38,10 +38,12 @@ class SSLCert(models.Model):
 	issuer           = models.CharField(max_length=default_length)
 	cert             = models.TextField()
 	key              = models.TextField()
+	ca               = models.TextField()
 	
-	def set_cert(self, cert, key):			
+	def set_cert(self, cert, key, ca):			
 		self.cert = cert
 		self.key  = key
+		self.ca   = ca
 		
 		cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
 			

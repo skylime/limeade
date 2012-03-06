@@ -86,7 +86,7 @@ def sslcert_add(request):
 	if form.is_valid():
 		c = SSLCert()
 		c.owner = request.user
-		c.set_cert(request.FILES['cert'].read(), request.FILES['key'].read())
+		c.set_cert(request.FILES['cert'].read(), request.FILES['key'].read(), request.FILES['ca'].read())
 		c.save()
 		return redirect('limeade_web_sslcert_list')
 	return render_to_response("limeade_web/sslcert_add.html",
