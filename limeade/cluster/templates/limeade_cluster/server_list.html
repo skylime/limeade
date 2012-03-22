@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Servers</h1>
+
+<p class="action_box">
+<span class="lime action_link">+</span><a href="{% url limeade_cluster_server_add %}">Add a new Server</a>
+</p>
+{% if object_list %}
+<table>
+<tr><th>Hostname</th><th>Services</th><th>&nbsp;</th></tr>
+{% for server in object_list %}
+        <tr>
+        <td><a href="{% url limeade_cluster_server_edit account.pk %}">{{ server.hostname }}</a></td>
+		<td>{{ server.services }}</td>
+		<td><a href="{% url limeade_cluster_server_delete account.pk %}" class="action_delete">Delete</a></td>
+        </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>You don't have any Servers yet.</p>
+{% endif %}
+<br />
+{% endblock %}
