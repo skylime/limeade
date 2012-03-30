@@ -100,6 +100,7 @@ INSTALLED_APPS = (
 	'limeade.cloud',
 	'limeade.mysql',
 	'limeade.ftp',
+	'limeade.cluster',
 	'djcelery',
 	'south',
 )

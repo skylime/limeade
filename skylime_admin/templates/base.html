@@ -71,6 +71,12 @@
 	<li><a href="/system/product/">Products</a></li>
 </ul>
 {% endif %}
+{% if perms.system.admin %}
+<h4>Admin</h4>
+<ul>
+	<li><a href="/cluster/server/">Server</a></li>
+</ul>
+{% endif %}
 </div>
 	{% endif %}
 <div id="content">

@@ -9,7 +9,7 @@ from forms import ServerForm
 
 @login_required
 def server_list(request):
-	return object_list(request, Server),
+	return object_list(request, Server.objects.all(),
 			template_name='limeade_cluster/server_list.html')
 
 @login_required
