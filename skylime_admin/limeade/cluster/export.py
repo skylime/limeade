@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 import csv
-from models import Server
+from models import Server, Service
 
-def export(request):
+def nodes(request):
 	response = HttpResponse(mimetype='text/plain')
 	
 	response.write(
@@ -29,5 +29,12 @@ node core-io {
 	return response
 	
 	
+def variables(request):
+	response = HttpResponse(mimetype='text/plain')
 	
-
+	for s in Service.objects.all():
+		response.write("$" + unicode(s) + "_nodes_ip   = [" + ', '.join(['"' + srv.ip + '"'       for srv in s.server_set.all()]) + "]\n")
+		response.write("$" + unicode(s) + "_nodes_host = [" + ', '.join(['"' + srv.hostname + '"' for srv in s.server_set.all()]) + "]\n")
+		
+	return response
+	
