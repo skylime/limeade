@@ -18,7 +18,14 @@
 		    <li>{{ service.name }}</li>
 		{% endfor %}
 		</ul></td>
-		<td><a href="{% url limeade_cluster_server_delete server.pk %}" class="action_delete">Delete</a></td>
+		<td>
+			{% if server.enabled %}
+				<a href="{% url limeade_cluster_server_disable server.pk %}">Disable</a>
+			{% else %}
+				<a href="{% url limeade_cluster_server_enable server.pk %}">Enable</a>
+			{% endif %}
+			<a href="{% url limeade_cluster_server_delete server.pk %}" class="action_delete">Delete</a>
+		</td>
         </tr>
 {% endfor %}
 </table>

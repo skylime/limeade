@@ -31,6 +31,23 @@ def server_edit(request, slug):
 	return render_to_response("limeade_cluster/server_edit.html",
 		{"form": form}, context_instance = RequestContext(request))
 
+
+@login_required
+def server_enable(request, slug):
+	s = get_object_or_404(Server, pk = slug)
+	s.enabled = True
+	s.save()
+	return redirect('limeade_cluster_server_list')
+
+
+@login_required
+def server_disable(request, slug):
+	s = get_object_or_404(Server, pk = slug)
+	s.enabled = False
+	s.save()
+	return redirect('limeade_cluster_server_list')
+
+
 @login_required
 def server_delete(request, slug):
 	s = get_object_or_404(Server, pk = slug)

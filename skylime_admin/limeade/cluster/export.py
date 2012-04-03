@@ -33,8 +33,15 @@ def variables(request):
 	response = HttpResponse(mimetype='text/plain')
 	
 	for s in Service.objects.all():
-		response.write("$" + unicode(s) + "_nodes_ip   = [" + ', '.join(['"' + srv.ip + '"'       for srv in s.server_set.all()]) + "]\n")
-		response.write("$" + unicode(s) + "_nodes_host = [" + ', '.join(['"' + srv.hostname + '"' for srv in s.server_set.all()]) + "]\n")
+		ips       = []
+		hostnames = []
+		
+		for srv in s.server_set.filter(enabled=True):
+			ips       += ['"' + srv.ip + '"']
+			hostnames += ['"' + srv.hostname + '"']
+		
+		response.write("$" + unicode(s) + "_nodes_ip   = [" + ', '.join(ips)       + "]\n")
+		response.write("$" + unicode(s) + "_nodes_host = [" + ', '.join(hostnames) + "]\n")
 		
 	return response
 	
