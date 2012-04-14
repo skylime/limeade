@@ -120,6 +120,9 @@ LOGIN_REDIRECT_URL = '/system/'
 # site api key
 SITE_API_KEY = 'Ab1Tae1Iegh5iechahvi'
 
+# mail cluster puppet class
+MAIL_POSTBOX_SERVICE_NAME = 'mail_postbox'
+
 # celery
 BROKER_HOST = "v1.local"
 BROKER_PORT = 5672
