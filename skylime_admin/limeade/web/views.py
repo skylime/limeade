@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.views.generic.list_detail import object_list, object_detail
 from django.template import RequestContext
 from limeade.system.utils import get_domains
-from models import VHost, SSLCert, HTTPRedirect as Redirect
+from models import VHost, DefaultVHost, SSLCert, HTTPRedirect as Redirect
 from forms import VHostForm, VHostEditForm, RedirectForm, SSLCertForm
 
 # accounts 
@@ -40,6 +40,27 @@ def vhost_delete(request, slug):
 		v.delete()
 	return redirect('limeade_web_vhost_list')
 	
+
+
+@login_required
+def vhost_catchall_set(request, slug):
+	v = get_object_or_404(VHost, pk = slug)
+	if v.domain.owner() == request.user:
+		DefaultVHost(vhost=v, domain=v.domain).save()
+	return redirect('limeade_web_vhost_list')
+	
+
+
+@login_required
+def vhost_catchall_delete(request, slug):
+	v = get_object_or_404(DefaultVHost, pk = slug)
+	if v.domain.owner() == request.user:
+		v.delete()
+	return redirect('limeade_web_vhost_list')
+	
+
+
+
 	
 # redirects
 @login_required

@@ -25,7 +25,7 @@ class VHost(models.Model):
 
 
 class DefaultVHost(models.Model):
-	domain = models.OneToOneField(Domain, blank=False)
+	domain = models.OneToOneField(Domain, primary_key=True)
 	vhost  = models.ForeignKey(VHost, blank=False)
 
 
@@ -56,7 +56,7 @@ class SSLCert(models.Model):
 		self.valid_not_after  = parseAsn1Generalizedtime(cert.get_notAfter())
 			
 	def __unicode__(self):
-		return self.subject + ' (' + self.serial + ')'
+		return self.cn + ' (' + self.serial + ')'
 
 class HTTPRedirect(models.Model):
 	name   = models.CharField(max_length=default_length)
