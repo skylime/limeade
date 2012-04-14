@@ -35,6 +35,7 @@ class SSLCert(models.Model):
 	valid_not_before = models.DateTimeField()
 	valid_not_after  = models.DateTimeField()
 	subject          = models.CharField(max_length=default_length)
+	cn               = models.CharField(max_length=default_length)
 	issuer           = models.CharField(max_length=default_length)
 	cert             = models.TextField()
 	key              = models.TextField()
@@ -49,6 +50,7 @@ class SSLCert(models.Model):
 			
 		self.subject = x509name_to_str(cert.get_subject())
 		self.issuer  = x509name_to_str(cert.get_issuer())
+		self.cn      = cert.get_subject().commonName
 		self.serial  = cert.get_serial_number()
 		self.valid_not_before = parseAsn1Generalizedtime(cert.get_notBefore())
 		self.valid_not_after  = parseAsn1Generalizedtime(cert.get_notAfter())

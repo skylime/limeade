@@ -8,11 +8,10 @@
 </p>
 {% if object_list %}
 <table>
-<tr><th>Subject</th><th>Serial</th><th>Valid not before</th><th>Valid not after</th><th>&nbsp;</th></tr>
+<tr><th>Common Name</th><th>Valid not before</th><th>Valid not after</th><th>&nbsp;</th></tr>
 {% for cert in object_list %}
         <tr>
-        <td><span title="{{ cert.issuer }}">{{ cert.subject }}</td>
-        <td>{{ cert.serial }}</td>
+        <td><span title="{{ cert.issuer }}">{{ cert.cn }}</td>
         <td>{{ cert.valid_not_before }}</td>
         <td>{{ cert.valid_not_after }}</td>
 		<td><a href="{% url limeade_web_sslcert_delete cert.pk %}" class="action_delete">Delete</a></td>
