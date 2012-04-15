@@ -120,8 +120,17 @@ LOGIN_REDIRECT_URL = '/system/'
 # site api key
 SITE_API_KEY = 'Ab1Tae1Iegh5iechahvi'
 
-# mail cluster puppet class
+# puppet class names
 MAIL_POSTBOX_SERVICE_NAME = 'mail_postbox'
+WEB_VHOST_STYLE_MAP = (
+    ('static', 'web_static'),
+    ('php',    'web_php'),
+    ('wsgi',   'web_wsgi'),
+)
+
+SYSTEM_USER_NAME      = "u%s"
+SYSTEM_USER_HOME      = "/srv/www/%s/"
+SYSTEM_USER_ID_OFFSET = 5000
 
 # celery
 BROKER_HOST = "v1.local"

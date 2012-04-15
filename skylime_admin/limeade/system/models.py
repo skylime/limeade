@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.conf import settings
 
 default_length = 250
 
@@ -18,7 +19,16 @@ class Person(models.Model):
 		
 	def username(self):
 		return self.user.username
-		
+	
+	def system_user_name(self):
+		return settings.SYSTEM_USER_NAME % self.username()
+	
+	def system_user_home(self):
+		return settings.SYSTEM_USER_HOME % self.username()
+	
+	def system_user_id(self):
+		return settings.SYSTEM_USER_ID_OFFSET + self.pk
+			
 	def __unicode__(self):
 		return self.user.first_name + ' ' + self.user.last_name + (' (' + self.company + ')' if self.company else '')
 

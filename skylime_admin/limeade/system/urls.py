@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from views import *
+from export import *
 
 urlpatterns = patterns('',
 	url(r'^$',         ressources,),
@@ -29,4 +30,6 @@ urlpatterns = patterns('',
 	url(r'^product/add/$',                     product_add,    name='limeade_system_product_add'),
 	url(r'^product/(?P<slug>[^/]+)/$',         product_edit,   name='limeade_system_product_edit'),
 	url(r'^product/(?P<slug>[^/]+)/delete/$',  product_delete, name='limeade_system_product_delete'),
+	
+	(r'^export/user.pp',  user_export),
 )

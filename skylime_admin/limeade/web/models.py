@@ -8,7 +8,7 @@ from x509 import parseAsn1Generalizedtime, x509name_to_str
 default_length = 250
 VHOST_STYLES = (
     ('static', 'Static'),
-    ('php5',   'PHP 5.3'),
+    ('php',    'PHP 5.3'),
     ('wsgi',   'Python'),
 )
 
@@ -19,6 +19,8 @@ class VHost(models.Model):
 	cert     = models.ForeignKey('SSLCert', blank=True, null=True, verbose_name='SSL Certificate')
 	# TODO: upgrade django version to make this work:
 	#cert     = models.ForeignKey('SSLCert', blank=True, null=True, on_delete=models.SET_NULL, verbose_name='SSL Certificate')
+	
+	unique_together = (("name", "domain"),)
 	
 	def __unicode__(self):
 		return unicode(self.name) + '.' + unicode(self.domain)

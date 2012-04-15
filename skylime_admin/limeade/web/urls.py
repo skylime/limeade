@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from views import *
+from export import *
 
 urlpatterns = patterns('',
 	url(r'^vhost/$',                                vhost_list,            name='limeade_web_vhost_list'),
@@ -18,4 +19,6 @@ urlpatterns = patterns('',
 	url(r'^cert/add/$',                       sslcert_add,    name='limeade_web_sslcert_add'),
 	url(r'^cert/(?P<slug>[^/]+)/delete$',     sslcert_delete, name='limeade_web_sslcert_delete'),
 
+
+	(r'^export/vhost.pp', vhost_export),
 )
