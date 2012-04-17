@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.conf import settings
+from limeade.system.utils import export_header
 from models import Person
 
 def user_export(request):
 	response = HttpResponse(mimetype='text/plain')
+	response.write(export_header())
 	for p in Person.objects.all():
 		username = p.system_user_name()
 		home     = p.system_user_home()

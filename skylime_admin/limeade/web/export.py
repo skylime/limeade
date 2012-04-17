@@ -1,10 +1,12 @@
 from django.http import HttpResponse
 from django.conf import settings
 from limeade.cluster.models import Server
+from limeade.system.utils import export_header
 from models import *
 
 def vhost_export(request):
 	response = HttpResponse(mimetype='text/plain')
+	response.write(export_header())
 	tpl = """
 	'{vhost}' => {{
 		'home'  => '{home}',

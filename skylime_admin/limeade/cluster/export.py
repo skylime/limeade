@@ -1,10 +1,11 @@
-from django.http import HttpResponse
 import csv
+from django.http import HttpResponse
+from limeade.system.utils import export_header
 from models import Server, Service
 
 def nodes(request):
 	response = HttpResponse(mimetype='text/plain')
-	
+	response.write(export_header())
 	response.write(
 """
 node default {
@@ -31,7 +32,7 @@ node core-io {
 	
 def variables(request):
 	response = HttpResponse(mimetype='text/plain')
-	
+	response.write(export_header())
 	for s in Service.objects.all():
 		ips       = []
 		hostnames = []
