@@ -1,7 +1,9 @@
 from django import forms
+from limeade.cluster.models import Region
 from models import VHost, HTTPRedirect as Redirect
 from django.utils.translation import ugettext_lazy as _
 from OpenSSL import SSL, crypto
+from IPy import IP
 
 class VHostForm(forms.ModelForm):
 	class Meta:
@@ -17,6 +19,18 @@ class RedirectForm(forms.ModelForm):
 		model = Redirect
 		
 
+class PoolIPForm(forms.Form):
+	subnet = forms.CharField(label = _("Subnet"))
+	region = forms.ModelChoiceField(queryset=Region.objects.all(), empty_label=None, label=_("Region"))
+		
+	def clean(self):
+		try:
+			IP(self.cleaned_data.get('subnet'))
+		except:
+			raise forms.ValidationError(_("Please enter a valid IP Address or Subnet in CIDR-Notation"))
+			
+		return self.cleaned_data
+		
 class SSLCertForm(forms.Form):
 	cert = forms.FileField(label = _("Certificate"))
 	key  = forms.FileField(label = _("Privatekey"))

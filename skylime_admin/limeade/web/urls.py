@@ -19,6 +19,8 @@ urlpatterns = patterns('',
 	url(r'^cert/add/$',                       sslcert_add,    name='limeade_web_sslcert_add'),
 	url(r'^cert/(?P<slug>[^/]+)/delete$',     sslcert_delete, name='limeade_web_sslcert_delete'),
 
+	url(r'^ip/$',                           poolip_list,   name='limeade_web_poolip_list'),
+	url(r'^ip/add/$',                       poolip_add,    name='limeade_web_poolip_add'),
 
 	(r'^export/vhost.pp', vhost_export),
 )

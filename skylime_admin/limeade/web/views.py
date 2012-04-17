@@ -2,9 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.views.generic.list_detail import object_list, object_detail
 from django.template import RequestContext
+from IPy import IP
 from limeade.system.utils import get_domains
-from models import VHost, DefaultVHost, SSLCert, HTTPRedirect as Redirect
-from forms import VHostForm, VHostEditForm, RedirectForm, SSLCertForm
+from limeade.cluster.models import Region
+from models import VHost, DefaultVHost, SSLCert, PoolIP, HTTPRedirect as Redirect
+from forms import VHostForm, VHostEditForm, RedirectForm, PoolIPForm, SSLCertForm
 
 # accounts 
 
@@ -96,6 +98,38 @@ def redirect_delete(request, slug):
 		r.delete()
 	return redirect('limeade_web_redirect_list')	
 
+
+# pool ips
+
+@login_required
+def poolip_list(request):
+	stats = []
+	for region in Region.objects.all():
+		total = PoolIP.objects.filter(region=region).count()
+		free  = PoolIP.objects.filter(region=region, sslcert=None).count()
+		used  = total - free
+		use   = used / float(total) * 100 if total else 0
+		stats += [{'region': region.name, 'total': total, 'used': used, 'free': free, 'use': use}]
+	
+	total = PoolIP.objects.all().count()
+	free  = PoolIP.objects.filter(sslcert=None).count()
+	used  = total - free
+	use   = used / float(total) * 100 if total else 0
+	stats += [{'region': 'Global', 'total': total, 'used': used, 'free': free, 'use': use}]
+	return render_to_response("limeade_web/poolip_list.html",
+		{"stats": stats}, context_instance = RequestContext(request))
+
+@login_required
+def poolip_add(request):
+	form = PoolIPForm(request.POST or None)
+	if form.is_valid():
+		for ip in IP(form.cleaned_data['subnet']):
+			PoolIP(ip=str(ip), region=form.cleaned_data['region']).save()
+		return redirect('limeade_web_poolip_list')
+	return render_to_response("limeade_web/poolip_add.html",
+		{"form": form}, context_instance = RequestContext(request))
+
+
 # ssl certs
 @login_required
 def sslcert_list(request):
@@ -107,8 +141,12 @@ def sslcert_add(request):
 	if form.is_valid():
 		c = SSLCert()
 		c.owner = request.user
-		c.set_cert(request.FILES['cert'].read(), request.FILES['key'].read(), request.FILES['ca'].read())
-		c.save()
+		c.ip = PoolIP.objects.filter(sslcert=None)[0]
+		if c.ip:
+			c.set_cert(request.FILES['cert'].read(), request.FILES['key'].read(), request.FILES['ca'].read())
+			c.save()
+		else:
+			pass # TODO: fail better
 		return redirect('limeade_web_sslcert_list')
 	return render_to_response("limeade_web/sslcert_add.html",
 		{"form": form}, context_instance = RequestContext(request))

@@ -4,6 +4,7 @@ from limeade.system.models import Product, Domain
 from limeade.system.utils import get_domains
 from OpenSSL import SSL, crypto
 from x509 import parseAsn1Generalizedtime, x509name_to_str
+from limeade.cluster.models import Region
 
 default_length = 250
 VHOST_STYLES = (
@@ -12,13 +13,12 @@ VHOST_STYLES = (
     ('wsgi',   'Python'),
 )
 
+
 class VHost(models.Model):
 	name     = models.CharField(max_length=default_length)
 	domain   = models.ForeignKey(Domain, blank=False)
 	style    = models.CharField(max_length=8, choices=VHOST_STYLES)
-	cert     = models.ForeignKey('SSLCert', blank=True, null=True, verbose_name='SSL Certificate')
-	# TODO: upgrade django version to make this work:
-	#cert     = models.ForeignKey('SSLCert', blank=True, null=True, on_delete=models.SET_NULL, verbose_name='SSL Certificate')
+	cert     = models.ForeignKey('SSLCert', blank=True, null=True, on_delete=models.SET_NULL, verbose_name='SSL Certificate')
 	
 	unique_together = (("name", "domain"),)
 	
@@ -31,6 +31,13 @@ class DefaultVHost(models.Model):
 	vhost  = models.ForeignKey(VHost, blank=False)
 
 
+class PoolIP(models.Model):
+	ip     = models.IPAddressField(unique=True, blank=False)
+	region = models.ForeignKey(Region, blank=False)
+	
+	def __unicode__(self):
+		return unicode(self.ip)
+
 class SSLCert(models.Model):
 	owner            = models.ForeignKey(User)
 	serial           = models.CharField(max_length=default_length)
@@ -42,6 +49,7 @@ class SSLCert(models.Model):
 	cert             = models.TextField()
 	key              = models.TextField()
 	ca               = models.TextField()
+	ip               = models.ForeignKey(PoolIP, unique=True, blank=False)
 	
 	def set_cert(self, cert, key, ca):			
 		self.cert = cert

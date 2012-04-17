@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>IP Pool for HTTPS</h1>
+
+<p class="action_box">
+<span class="lime action_link">+</span><a href="{% url limeade_web_poolip_add %}">Add new IP Addresses</a>
+</p>
+
+<table>
+<tr><th>Region</th><th>Used</th><th>Free</th><th>Use%</th><th>Total</th></tr>
+{% for region in stats %}
+        <tr>
+        <td>{{ region.region }}</td>
+        <td>{{ region.used }}</td>
+        <td>{{ region.free }}</td>
+		<td>{{ region.use|floatformat }}%</td>
+		<td>{{ region.total }}</td>
+        </tr>
+{% endfor %}
+</table>
+
+{% endblock %}
