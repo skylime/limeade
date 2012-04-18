@@ -14,7 +14,7 @@ def vhost_export(request):
 		'home'     => '{home}',
 		'user'     => '{user}',
 		'group'    => '{user}',
-		'aliases'  => {aliases},
+		'aliases'  => [{aliases}],
 	}},
 """
 	for style in VHOST_STYLES:
@@ -25,7 +25,7 @@ def vhost_export(request):
 				vhost    = v.name + '.' + unicode(v.domain),
 				user     = user.system_user_name(),
 				home     = user.system_user_home(),
-				aliases  = ('["*.' + unicode(v.domain) + '"]' if v.defaultvhost_set.exists() else '[]'),
+				aliases  = '"*.' + unicode(v.domain) + '"' if v.defaultvhost_set.exists() else '',
 			))
 
 		response.write("}\n")
@@ -55,16 +55,18 @@ def lb_export(request):
 		'style'    => '{style}',
 		'cert_id'  => {cert_id},
 		'cert_ip'  => {cert_ip},
+		'aliases'  => [{aliases}],
 	}},
 """
 	
 	response.write("$web_lb_vhosts = {")
 	for v in VHost.objects.all():
 		response.write(tpl.format(
-			vhost    = ('*' if v.defaultvhost_set.exists() else v.name) + '.' + unicode(v.domain),
+			vhost    = v.name + '.' + unicode(v.domain),
 			style    = v.style,
 			cert_id  = '"' + str(v.cert.pk) + '"' if v.cert else 'undef',
 			cert_ip  = '"' + str(v.cert.ip) + '"' if v.cert else 'undef',
+			aliases  = '"*.' + unicode(v.domain) + '"' if v.defaultvhost_set.exists() else '',
 		))
 
 	response.write("}\n")
