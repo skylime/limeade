@@ -55,7 +55,7 @@ def lb_export(request):
 		'style'    => '{style}',
 		'cert_id'  => {cert_id},
 		'cert_ip'  => {cert_ip},
-		'catchall' => {catchall}',
+		'catchall' => {catchall},
 	}},
 """
 	
