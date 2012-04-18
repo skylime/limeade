@@ -14,6 +14,7 @@ def vhost_export(request):
 		'home'     => '{home}',
 		'user'     => '{user}',
 		'group'    => '{user}',
+		'aliases'  => {aliases},
 	}},
 """
 	for style in VHOST_STYLES:
@@ -21,9 +22,10 @@ def vhost_export(request):
 		for v in VHost.objects.filter(style=style[0]):
 			user = v.domain.owner().get_profile()
 			response.write(tpl.format(
-				vhost    = ('*' if v.defaultvhost_set.exists() else v.name) + '.' + unicode(v.domain),
+				vhost    = v.name + '.' + unicode(v.domain),
 				user     = user.system_user_name(),
 				home     = user.system_user_home(),
+				aliases  = ('["*.' + unicode(v.domain) + '"]' if v.defaultvhost_set.exists() else '[]'),
 			))
 
 		response.write("}\n")
