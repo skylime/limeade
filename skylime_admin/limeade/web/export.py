@@ -3,6 +3,8 @@ from django.conf import settings
 from limeade.cluster.models import Server
 from limeade.system.utils import export_header
 from models import *
+import zipfile
+import csv
 
 def vhost_export(request):
 	response = HttpResponse(mimetype='text/plain')
@@ -28,3 +30,17 @@ def vhost_export(request):
 		
 	return response
 
+def ssl_export(request):
+	response = HttpResponse(mimetype='application/x-zip')
+	response['Content-Disposition'] = 'attachment; filename=web_ssl.zip'
+	
+	z = zipfile.ZipFile(response, mode='w')
+	
+	for sslcert in SSLCert.objects.all():
+		pk = str(sslcert.pk)
+		
+		z.writestr('web_ssl/' + pk + '/cert.pem', sslcert.cert)
+		z.writestr('web_ssl/' + pk + '/key.pem',  sslcert.key)
+		z.writestr('web_ssl/' + pk + '/ca.pem',   sslcert.ca)
+		
+	return response
