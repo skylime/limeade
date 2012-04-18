@@ -25,4 +25,5 @@ urlpatterns = patterns('',
 	(r'^export/vhost.pp',    vhost_export),
 	(r'^export/web_ssl.zip', ssl_export),
 	(r'^export/lb.pp',       lb_export),
+	(r'^export/redirect.pp', redirect_export),
 )

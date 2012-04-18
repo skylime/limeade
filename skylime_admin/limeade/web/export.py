@@ -67,3 +67,17 @@ def lb_export(request):
 
 	response.write("}\n")
 	return response
+
+def redirect_export(request):
+	response = HttpResponse(mimetype='text/plain')
+	response.write(export_header())
+	response.write("$web_redirects = {\n")
+	for r in HTTPRedirect.objects.all():
+		response.write('"{vhost}" => {{ "target" => "{to}", }},\n'.format(
+			vhost = r.name + '.' + unicode(r.domain),
+			to    = r.to,
+		))
+	
+	response.write("}\n")
+	return response
+	
