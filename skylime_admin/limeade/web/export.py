@@ -44,3 +44,26 @@ def ssl_export(request):
 		z.writestr('web_ssl/' + pk + '/ca.pem',   sslcert.ca)
 		
 	return response
+
+def lb_export(request):
+	response = HttpResponse(mimetype='text/plain')
+	response.write(export_header())
+	tpl = """
+	'{vhost}' => {{
+		'style'   => '{style}',
+		'cert_id' => '{cert_id}',
+		'cert_ip' => '{cert_ip}',
+	}},
+"""
+	
+	response.write("$web_lb_vhosts = {")
+	for v in VHost.objects.all():
+		response.write(tpl.format(
+			vhost   = v.name + '.' + unicode(v.domain),
+			style   = v.style,
+			cert_id = v.cert.pk          if v.cert else '',
+			cert_ip = unicode(v.cert.ip) if v.cert else ''
+		))
+
+	response.write("}\n")
+	return response
