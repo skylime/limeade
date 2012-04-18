@@ -259,7 +259,7 @@ def product_add(request):
 		form.save()
 		for l in limitsets:
 			l.save()
-		redirect('limeade_system_product_list')
+		return redirect('limeade_system_product_list')
 	return render_to_response("limeade_system/product_add.html",
 		{"form": form, "limitsets": limitsets}, context_instance = RequestContext(request))
 
