@@ -14,7 +14,6 @@ def vhost_export(request):
 		'home'     => '{home}',
 		'user'     => '{user}',
 		'group'    => '{user}',
-		'catchall' => {catchall},
 	}},
 """
 	for style in VHOST_STYLES:
@@ -22,10 +21,9 @@ def vhost_export(request):
 		for v in VHost.objects.filter(style=style[0]):
 			user = v.domain.owner().get_profile()
 			response.write(tpl.format(
-				vhost    = v.name + '.' + unicode(v.domain),
+				vhost    = ('*' if v.defaultvhost_set.exists() else v.name) + '.' + unicode(v.domain),
 				user     = user.system_user_name(),
 				home     = user.system_user_home(),
-				catchall = 'true' if v.defaultvhost_set.exists() else 'false'
 			))
 
 		response.write("}\n")
@@ -55,18 +53,16 @@ def lb_export(request):
 		'style'    => '{style}',
 		'cert_id'  => {cert_id},
 		'cert_ip'  => {cert_ip},
-		'catchall' => {catchall},
 	}},
 """
 	
 	response.write("$web_lb_vhosts = {")
 	for v in VHost.objects.all():
 		response.write(tpl.format(
-			vhost    = v.name + '.' + unicode(v.domain),
+			vhost    = ('*' if v.defaultvhost_set.exists() else v.name) + '.' + unicode(v.domain),
 			style    = v.style,
 			cert_id  = '"' + str(v.cert.pk) + '"' if v.cert else 'undef',
 			cert_ip  = '"' + str(v.cert.ip) + '"' if v.cert else 'undef',
-			catchall = 'true' if v.defaultvhost_set.exists() else 'false'
 		))
 
 	response.write("}\n")

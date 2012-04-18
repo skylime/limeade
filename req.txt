@@ -3,6 +3,6 @@ django-celery
 #ghettoq
 South
 pyOpenSSL
-
+IPy
 -e git+http://github.com/ericflo/django-pagination.git#egg=django-pagination
 django-uni-form
