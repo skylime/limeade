@@ -57,10 +57,6 @@ def lb_export(request):
 		'cert_ip'  => {cert_ip},
 	}},
 """
-	response.write("$web_lb_styles = {\n")
-	for style in VHOST_STYLES:
-		response.write("\t'{style}' => {{'server' => $web_{style}_nodes_ip,}},\n".format(style=style[0]))
-	response.write("}\n\n")
 	
 	response.write("$web_lb_vhosts = {")
 	for v in VHost.objects.all():
