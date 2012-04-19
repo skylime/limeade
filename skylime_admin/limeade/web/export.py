@@ -39,11 +39,9 @@ def ssl_export(request):
 	z = zipfile.ZipFile(response, mode='w')
 	
 	for sslcert in SSLCert.objects.all():
-		pk = str(sslcert.pk)
-		
-		z.writestr('web_ssl/' + pk + '/cert.pem', sslcert.cert)
-		z.writestr('web_ssl/' + pk + '/key.pem',  sslcert.key)
-		z.writestr('web_ssl/' + pk + '/ca.pem',   sslcert.ca)
+		pk  = str(sslcert.pk)
+		pem = sslcert.cert + sslcert.ca + sslcert.key
+		z.writestr('web_ssl/' + pk + '.pem', pem)
 		
 	return response
 
