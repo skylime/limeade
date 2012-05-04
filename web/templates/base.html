@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" href="{{ STATIC_URL|default:'/static/' }}lib/style/skylime_admin.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL|default:'/static/' }}lib/style/uni-form-generic.css" type="text/css" />
+	<link rel="stylesheet" href="{{ STATIC_URL|default:'/static/' }}lib/style/uni-form.css" type="text/css" />
+	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/uni-form.jquery.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/cufon-yui.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/MuseoSans.font.js" type="text/javascript"></script>
+	<script type="text/javascript">
+			Cufon.replace('#title');
+			Cufon.replace('.action_link');
+	</script>
+    <title>{% block title %}Admin{% endblock %}</title>
+</head>
+<body>
+
+<h2 id="title">Lime<span class="lime">a</span>de</h2>
+<div id="topbar">
+	{% if user.is_authenticated %}
+		Logged in as {{ user.username }}.
+		{% if 'limeade_original_user' in request.session %}
+			<a href="{% url limeade_system_manage_return %}">Return to {{ request.session.limeade_original_user }}</a>
+		{% endif %}	
+		<a href="{% url django.contrib.auth.views.logout_then_login %}">Logout</a>
+	{% else %}
+		<a href="{% url django.contrib.auth.views.login %}">Login</a>
+	{% endif %}
+</div>
+
+<div id="container">
+	{% if user.is_authenticated %}
+<div id="menu">
+<h4>System</h4>
+<ul>
+	<li><a href="/system/">Ressources</a></li>
+	<li><a href="/system/account/">Account</a></li>
+</ul>
+{% if perms.system.customer %}
+<h4>Web</h4>
+<ul>
+	<li><a href="/web/vhost/">VHosts</a></li>
+	<li><a href="/web/redirect/">Redirects</a></li>
+	<li><a href="/web/cert/">SSL Certificates</a></li>
+</ul>
+<h4>FTP</h4>
+<ul>
+	<li><a href="/ftp/account/">Accounts</a></li>
+</ul>
+<h4>MySQL</h4>
+<ul>
+	<li><a href="/mysql/db/">Database</a></li>
+</ul>
+<h4>Cloud</h4>
+<ul>
+	<li><a href="/cloud/instance/">Instances</a></li>
+	<li><a href="/cloud/sshkey/">SSH Keys</a></li>
+</ul>
+<h4>Email</h4>
+<ul>
+	<li><a href="/mail/account/">Accounts</a></li>
+	<li><a href="/mail/redirect/">Redirects</a></li>
+</ul>
+{% endif %}
+{% if perms.system.reseller %}
+<h4>Reseller</h4>
+<ul>
+	<li><a href="/system/customer/">Customers</a></li>
+	<li><a href="/system/product/">Products</a></li>
+</ul>
+{% endif %}
+{% if perms.system.admin %}
+<h4>Admin</h4>
+<ul>
+	<li><a href="/cluster/region/">Region</a></li>
+	<li><a href="/cluster/server/">Server</a></li>
+	
+</ul>
+{% endif %}
+</div>
+	{% endif %}
+<div id="content">
+	{% if messages %}
+	<ul class="messages">
+	    {% for message in messages %}
+	    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	    {% endfor %}
+	</ul>
+	{% endif %}
+	
+	{% block content %}{% endblock %}
+</div>
+<div class="clear"></div>
+</div>	
+
+</body>
+</html>
