@@ -16,3 +16,4 @@ sqlite.db
 sqlite.db*
 local_settings.py
 htdocs/
+MuseoSans.font.js
