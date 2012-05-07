@@ -126,7 +126,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
 )
 
-AUTH_PROFILE_MODULE = "system.person"
+AUTH_PROFILE_MODULE = "system.Person"
 LOGIN_REDIRECT_URL = '/system/'
 
 # site api key
