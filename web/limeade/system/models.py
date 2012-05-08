@@ -25,10 +25,10 @@ class Person(models.Model):
         >>> person
         <Person: Test User (Test Company)>
     """
-    user      = models.OneToOneField(User, primary_key=True, _('User'))
-    company   = models.CharField(max_length=default_length, blank=True, _('Company'))
-    address   = models.CharField(max_length=default_length, _('Address'))
-    parent    = models.ForeignKey('self', null=True, blank=True, _('Parent User'))
+    user      = models.OneToOneField(User, primary_key=True, verbose_name=_('User'))
+    company   = models.CharField(max_length=default_length, blank=True, verbose_name=_('Company'))
+    address   = models.CharField(max_length=default_length, verbose_name=_('Address'))
+    parent    = models.ForeignKey('self', null=True, blank=True, verbose_name=_('Parent User'))
     
     def first_name(self):
         """Returns the first name of the user."""
@@ -56,8 +56,7 @@ class Person(models.Model):
     
     def __unicode__(self):
         """Unicode representation for the user."""
-        return self.user.first_name + ' ' + self.user.last_name + (' (' + \ 
-            self.company + ')' if self.company else '')
+        return self.user.first_name + ' ' + self.user.last_name + (' (' + self.company + ')' if self.company else '')
     
     class Meta:
         """Meta information of any person"""
@@ -85,9 +84,9 @@ class Product(models.Model):
         >>> product
         <Product: Testproduct>
     """
-    name         = models.CharField(max_length=default_length, _('Name'))
-    personalized = models.BooleanField(_('Personalized?'))
-    owner        = models.ForeignKey(User, _('Owner'))
+    name         = models.CharField(max_length=default_length, verbose_name=_('Name'))
+    personalized = models.BooleanField(verbose_name=_('Personalized?'))
+    owner        = models.ForeignKey(User, verbose_name=_('Owner'))
     
     def __unicode__(self):
         """Unicode representation for the product."""
@@ -123,8 +122,8 @@ class Contract(models.Model):
         >>> contract
         <Contract: Testuser / Testproduct>
     """
-    person  = models.ForeignKey(User, _('Person'))
-    product = models.ForeignKey(Product, _('Product'))
+    person  = models.ForeignKey(User, verbose_name=_('Person'))
+    product = models.ForeignKey(Product, verbose_name=_('Product'))
     
     def __unicode__(self):
         """Unicode representation of the contract"""
@@ -162,8 +161,8 @@ class Domain(models.Model):
     
     .. note:: name of domain must be unique
     """
-    contract = models.ForeignKey(Contract, _('Contract'))
-    name = models.CharField(max_length=default_length, unique=True, _('Name'))
+    contract = models.ForeignKey(Contract, verbose_name=_('Contract'))
+    name = models.CharField(max_length=default_length, unique=True, verbose_name=_('Name'))
     
     def owner(self):
         """Returns the owner of the domain."""
