@@ -1,4 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
 from ..cloud.models import Limitset as CloudLimitset
