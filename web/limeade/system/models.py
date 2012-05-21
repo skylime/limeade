@@ -1,9 +1,9 @@
-from django.db import models
-from django.forms import ModelForm
-from django.contrib.auth.models import User
-from django.conf import settings
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from django.forms import ModelForm
+from django.conf import settings
+from django.db import models
 
 
 # define default length for Django's ORM
@@ -24,6 +24,8 @@ class Person(models.Model):
         >>> person = Person.objects.get(pk=1)
         >>> person
         <Person: Test User (Test Company)>
+    
+    .. todo:: Add more relevant user information.
     """
     user      = models.OneToOneField(User, primary_key=True, verbose_name=_('User'))
     company   = models.CharField(max_length=default_length, blank=True, verbose_name=_('Company'))
