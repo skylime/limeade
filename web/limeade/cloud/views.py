@@ -135,22 +135,26 @@ def instance_restart(request, slug):
         dom.destroy()
         dom.create()
     except:
-        pass    
+        pass
     
     return redirect('limeade_cloud_instance_list')
 
 
 @login_required
 def instance_vnc(request, slug):
-    # get the instance
-    # and get url back to template to open novnc
-    pass
+    from urlparse import urlparse
+    VNC_PORT = 5900
+    i = get_object_or_404(Instance, pk=slug)
+    host = urlparse(i.node.uri).netloc
+    return render_to_response('limeade_cloud/novnc.html',{
+    'host': host, 'port': VNC_PORT}, context_instance=RequestContext(request))
 
 
 # ssh keys
 @login_required
 def sshkey_list(request):
     return object_list(request, SSHKey.objects.filter(owner = request.user), template_name='limeade_cloud/sshkey_list.html')
+
 
 @login_required
 def sshkey_add(request):
@@ -163,6 +167,7 @@ def sshkey_add(request):
     return render_to_response("limeade_cloud/sshkey_add.html",
         {"form": form}, context_instance = RequestContext(request))
 
+
 @login_required
 def sshkey_delete(request, slug):
     key = get_object_or_404(SSHKey, pk = slug)
@@ -171,7 +176,7 @@ def sshkey_delete(request, slug):
     return redirect('limeade_cloud_sshkey_list')
 
 
-# API   
+# API
 def instance_activate(request):
     if request.GET.get('site_api_key', '') != settings.SITE_API_KEY:
         return HttpResponse(serialize({"status": "failure", "reason": 'wrong key'}), mimetype="application/json")
@@ -186,5 +191,4 @@ def instance_info(request, slug):
     response = {'hostname': i.hostname}
     response['ssh_keys'] = [k.key for k in i.sshkeys.all()]
     return HttpResponse(serialize(response), mimetype="application/json")
-
 
