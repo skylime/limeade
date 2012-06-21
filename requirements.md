@@ -2,7 +2,7 @@ Requirements for Limeade
 ========================
 
 Basically you need Python 2.7 and 
-[Django <= 1.3](http://www.djangoproject.com/ "Django").
+[Django >= 1.3](http://www.djangoproject.com/ "Django").
 
 Other requirements
 ------------------
