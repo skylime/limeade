@@ -1,13 +1,7 @@
+*.*~
 *.log
 *.pot
 *.pyc
-*.py~
-*.html~
-*.css~
-*.js~
-*.json~
-*.xml~
-'.txt~
 demo.db
 demo.db*
 dev.db
