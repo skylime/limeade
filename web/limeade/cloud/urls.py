@@ -10,7 +10,7 @@ urlpatterns = patterns('limeade.cloud.views',
     url(r'^instance/(?P<slug>[^/]+)/start$',   'instance_start',   name='limeade_cloud_instance_start'),
     url(r'^instance/(?P<slug>[^/]+)/stop$',    'instance_stop',    name='limeade_cloud_instance_stop'),
     url(r'^instance/(?P<slug>[^/]+)/restart$', 'instance_restart', name='limeade_cloud_instance_restart'),
-    #url(r'^instance/(?P<slug>[^/]+)/vnc/$',   'instance_vnc',     name='limeade_cloud_instance_vnc'),
+    url(r'^instance/(?P<slug>[^/]+)/vnc/$',    'instance_vnc',     name='limeade_cloud_instance_vnc'),
 )
 
 # api

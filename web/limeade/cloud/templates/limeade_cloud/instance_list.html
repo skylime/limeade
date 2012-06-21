@@ -22,7 +22,7 @@
 					<a href="{% url limeade_cloud_instance_stop instance.db.pk %}">Stop</a>
 				{% endif %}
 				<a href="{% url limeade_cloud_instance_restart instance.db.pk %}">Restart</a>
-				<a href="#">VNC</a>
+				<a href="{% url limeade_cloud_instance_vnc instance.db.pk %}">VNC</a>
 				<a href="{% url limeade_cloud_instance_delete instance.db.pk %}" class="action_delete">Delete</a>
 			{% endif %}
 		</td>
