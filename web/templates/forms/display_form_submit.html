@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<div class="rowfield submit">
+    <button type="submit" class="{% if button_class %}{{ button_class }}{% else %}btn{% endif %}">
+        {% if submit_text %}
+            {{ submit_text }}
+        {% else %}
+            {% trans "Send" %}
+        {% endif %}
+    </button>
+    <input type="hidden" name="next" value="{{ next }}" />
+</div>

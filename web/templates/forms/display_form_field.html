@@ -1,0 +1,16 @@
+{% if field %}
+    <div class="rowfield {% if field.field.required %} required{% endif %}{% if field.errors %} errors{% endif %}">
+        <label class="field-name" for="{{ field.auto_id }}">
+            {{ field.label|escape }}{% if field.field.required %} <span>*</span>{% endif %}
+        </label>
+        <div class="field-content">
+            {{ field }}
+            {% include "forms/display_form_field_errors.html" %}
+            {% if field.help_text %}
+                <div class="helptext">
+                    {{ field.help_text|safe }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

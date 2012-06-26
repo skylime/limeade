@@ -1,0 +1,8 @@
+{% include "forms/display_form_errors.html" %}
+{% for field in form %}
+    {% if not field.is_hidden %}
+        {% include "forms/display_form_field.html" %}
+    {% endif %}
+{% endfor %}
+{% include "forms/display_form_hidden_fields.html" %}
+
