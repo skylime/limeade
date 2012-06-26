@@ -1,0 +1,99 @@
+body { font-family: 'Droid Sans', Ubuntu, Helvetica, sans-serif; }
+
+#branding {
+    background-color: #333;
+    position: relative;
+    padding: 1.25em 0;
+    border-bottom: 1px solid #ccc;
+}
+
+#title {
+    margin: 0 0 0 4em;
+    color: #ccc;
+}
+
+#title .lime {
+    color: #d6ff00;
+}
+
+#userbar {
+    position: absolute;
+    top: 0;
+    right: 6em;
+    background-color: #e6e8e0;
+    padding: 0.65em 1.5em;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid #ccc;
+    border-top: 0 none;
+}
+
+#userbar p {
+    margin: 0;
+    text-shadow: 1px 1px 1px #fff;
+    font-size: 13px;
+}
+
+#userbar strong { margin-right: 2em; }
+
+#main { overflow: hidden; }
+
+#navigation {
+    float: left;
+    width: 19%;
+    border-right: 1px solid #ccc;
+    background-color: #e6e8e0;
+    padding: 1em 0;
+    margin-bottom: -1000px;
+    padding-bottom: 1000px;
+}
+
+#content {
+    float: right;
+    width: 76%;
+    padding: 2%;
+    margin-bottom: -1000px;
+    padding-bottom: 1000px;
+}
+
+#navigation ul {
+    width: 52%;
+    float: right;
+    margin: 0 -1px 2em;
+}
+
+#navigation ul li {
+    padding-left: 0.5em;
+    margin: 0 0 0.3em;
+    text-shadow: 1px 1px 1px #fff;
+}
+
+#navigation ul li.nav-head {
+    font-weight: bold;
+    color: #333;
+    padding-left: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+#navigation ul li a {
+    text-decoration: none;
+}
+
+body.system #navigation ul.nav-system,
+body.web #navigation ul.nav-web,
+body.ftp #navigation ul.nav-ftp,
+body.mysql #navigation ul.nav-mysql,
+body.cloud #navigation ul.nav-cloud,
+body.mail #navigation ul.nav-email,
+body.admin #navigation ul.nav-admin {
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    border-right: 0 none;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -2px 2px 3px rgba(0, 0, 0, 0.2);
+    padding: 1em;
+}
+
+#content h1 {
+    border-bottom: 1px solid #ccc;
+    letter-spacing: -0.025em;
+}

@@ -1,99 +1,164 @@
+{% load i18n %}
+
+{% comment %}
+    The base HTML document, which includes all necessary containers. Every other
+    template have to extend this.
+{% endcomment %}
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ LANGUAGE_CODE }}"><![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="{{ LANGUAGE_CODE }}"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="{{ LANGUAGE_CODE }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" dir="ltr" lang="{{ LANGUAGE_CODE }}"> <!--<![endif]-->
 <head>
-    <link rel="stylesheet" href="{{ STATIC_URL|default:'/static/' }}lib/style/skylime_admin.css" />
-	<link rel="stylesheet" href="{{ STATIC_URL|default:'/static/' }}lib/style/uni-form-generic.css" type="text/css" />
-	<link rel="stylesheet" href="{{ STATIC_URL|default:'/static/' }}lib/style/uni-form.css" type="text/css" />
-	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/uni-form.jquery.js" type="text/javascript"></script>
-	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/cufon-yui.js" type="text/javascript"></script>
-	<script src="{{ STATIC_URL|default:'/static/' }}lib/js/MuseoSans.font.js" type="text/javascript"></script>
-	<script type="text/javascript">
-			Cufon.replace('#title');
-			Cufon.replace('.action_link');
-	</script>
-    <title>{% block title %}Admin{% endblock %}</title>
+    <meta charset="UTF-8" />
+    
+    <title>{% block title %}Limeade{% endblock %}</title>
+    
+    <meta
+        name="cache-control"
+        content="public" />
+    <meta
+        name="language"
+        content="{{ LANGUAGE_CODE }}" />
+    <meta
+        name="viewport"
+        content="width=device-width" />
+    {% block metatags %}{% endblock %}
+    
+    <link
+        rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="{{ STATIC_URL|default:'/static/' }}lib/css/normalize.css" />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="{{ STATIC_URL|default:'/static/' }}lib/css/forms.css" />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="{{ STATIC_URL|default:'/static/' }}lib/css/layout.css" />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="{{ STATIC_URL|default:'/static/' }}lib/css/helper.css" />
+    {% block stylesheets %}{% endblock %}
+    
+    <script
+        type="text/javascript"
+        src="{{ STATIC_URL|default:'/static/' }}lib/js/libs/modernizr.min.js">
+    </script>
+    
     {% block extrahead %}{% endblock %}
 </head>
-<body>
-
-<h2 id="title">Lime<span class="lime">a</span>de</h2>
-<div id="topbar">
-	{% if user.is_authenticated %}
-		Logged in as {{ user.username }}.
-		{% if 'limeade_original_user' in request.session %}
-			<a href="{% url limeade_system_manage_return %}">Return to {{ request.session.limeade_original_user }}</a>
-		{% endif %}	
-		<a href="{% url django.contrib.auth.views.logout_then_login %}">Logout</a>
-	{% else %}
-		<a href="{% url django.contrib.auth.views.login %}">Login</a>
-	{% endif %}
-</div>
-
-<div id="container">
-	{% if user.is_authenticated %}
-<div id="menu">
-<h4>System</h4>
-<ul>
-	<li><a href="/system/">Ressources</a></li>
-	<li><a href="/system/account/">Account</a></li>
-</ul>
-{% if perms.system.customer %}
-<h4>Web</h4>
-<ul>
-	<li><a href="/web/vhost/">VHosts</a></li>
-	<li><a href="/web/redirect/">Redirects</a></li>
-	<li><a href="/web/cert/">SSL Certificates</a></li>
-</ul>
-<h4>FTP</h4>
-<ul>
-	<li><a href="/ftp/account/">Accounts</a></li>
-</ul>
-<h4>MySQL</h4>
-<ul>
-	<li><a href="/mysql/db/">Database</a></li>
-</ul>
-<h4>Cloud</h4>
-<ul>
-	<li><a href="/cloud/instance/">Instances</a></li>
-	<li><a href="/cloud/sshkey/">SSH Keys</a></li>
-</ul>
-<h4>Email</h4>
-<ul>
-	<li><a href="/mail/account/">Accounts</a></li>
-	<li><a href="/mail/redirect/">Redirects</a></li>
-</ul>
-{% endif %}
-{% if perms.system.reseller %}
-<h4>Reseller</h4>
-<ul>
-	<li><a href="/system/customer/">Customers</a></li>
-	<li><a href="/system/product/">Products</a></li>
-</ul>
-{% endif %}
-{% if perms.system.admin %}
-<h4>Admin</h4>
-<ul>
-	<li><a href="/cluster/region/">Region</a></li>
-	<li><a href="/cluster/server/">Server</a></li>
-	
-</ul>
-{% endif %}
-</div>
-	{% endif %}
-<div id="content">
-	{% if messages %}
-	<ul class="messages">
-	    {% for message in messages %}
-	    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-	    {% endfor %}
-	</ul>
-	{% endif %}
-	
-	{% block content %}{% endblock %}
-</div>
-<div class="clear"></div>
-</div>	
-
+<body class="{% block bodyclass %}{% if user.is_authenticated %}authenticated{% else %}guest{% endif %} lang-{{ LANGUAGE_CODE }}{% endblock %}">
+    <header id="branding" role="banner">
+        <h2 id="title">Lime<span class="lime">a</span>de</h2>
+        <div id="userbar">
+            {% if user.is_authenticated %}
+                <p>
+                    {% trans "Logged in as" %} <strong>{{ user.username }}</strong>
+                    {% if 'limeade_original_user' in request.session %}
+                        <a href="{% url limeade_system_manage_return %}" class="btn btn-info">{% trans "Return to" %} {{ request.session.limeade_original_user }}</a>
+                    {% endif %}
+                    <a href="{% url django.contrib.auth.views.logout_then_login %}" class="btn btn-danger">{% trans "Logout" %}</a>
+                </p>
+            {% else %}
+                <a href="{% url django.contrib.auth.views.login %}" class="btn btn-primary">{% trans "Login" %}</a>
+            {% endif %}
+        </div>
+    </header>
+    <div id="main" class="clearfix">
+        {% if user.is_authenticated %}
+            <nav id="navigation" role="navigation">
+                <ul class="nav-system">
+                    <li class="nav-head">{% trans "System" %}</li>
+                    <li><a href="{% url limeade_system_ressources %}">{% trans "Ressources" %}</a></li>
+                    <li><a href="{% url limeade_system_account %}">{% trans "Account" %}</a></li>
+                </ul>
+                {% if perms.system.customer %}
+                    <ul class="nav-web">
+                        <li class="nav-head">{% trans "Web" %}</li>
+                        <li><a href="{% url limeade_web_vhost_list %}">{% trans "VHosts" %}</a></li>
+                        <li><a href="{% url limeade_web_redirect_list %}">{% trans "Redirects" %}</a></li>
+                        <li><a href="{% url limeade_web_sslcert_list %}">{% trans "SSL Certificates" %}</a></li>
+                    </ul>
+                    <ul class="nav-ftp">
+                        <li class="nav-head">{% trans "FTP" %}</li>
+                        <li><a href="{% url limeade_ftp_account_list %}">{% trans "Accounts" %}</a></li>
+                    </ul>
+                    <ul class="nav-mysql">
+                        <li class="nav-head">{% trans "MySQL" %}</li>
+                        <li><a href="{% url limeade_mysql_db_list %}">{% trans "Database" %}</a></li>
+                    </ul>
+                    <ul class="nav-cloud">
+                        <li class="nav-head">{% trans "Cloud" %}</li>
+                        <li><a href="{% url limeade_cloud_instance_list %}">{% trans "Instances" %}</a></li>
+                        <li><a href="{% url limeade_cloud_sshkey_list %}">{% trans "SSH Keys" %}</a></li>
+                    </ul>
+                    <ul class="nav-email">
+                        <li class="nav-head">{% trans "Email" %}</li>
+                        <li><a href="{% url limeade_mail_account_list %}">{% trans "Accounts" %}</a></li>
+                        <li><a href="{% url limeade_mail_redirect_list %}">{% trans "Redirects" %}</a></li>
+                    </ul>
+                {% endif %}
+                {% if perms.system.reseller %}
+                    <ul class="nav-reseller">
+                        <li class="nav-head">{% trans "Reseller" %}</li>
+                        <li><a href="{% url limeade_system_customer_list %}">{% trans "Customers" %}</a></li>
+                        <li><a href="{% url limeade_system_product_list %}">{% trans "Products" %}</a></li>
+                    </ul>
+                {% endif %}
+                {% if perms.system.admin %}
+                    <ul class="nav-admin">
+                        <li class="nav-head">{% trans "Admin" %}</li>
+                        <li><a href="{% url limeade_cluster_region_list %}">{% trans "Region" %}</a></li>
+                        <li><a href="{% url limeade_cluster_server_list %}">{% trans "Server" %}</a></li>
+                    </ul>
+                {% endif %}
+            </nav>
+        {% endif %}
+        <div id="content" role="main">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% comment %}
+        JavaScript at the bottom for fast page loading.
+        
+        Load jQuery directly via Google API, if fails, fall back to load from
+        static files.
+    {% endcomment %}
+    <script
+        type="text/javascript"
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+        window.jQuery || document.write('<script src="{{ STATIC_URL|default:'/static/'}}js/libs/jquery.min.js"><\/script>')
+    </script>
+    <script
+        type="text/javascript"
+        src="{{ STATIC_URL|default:'/static/' }}lib/js/cufon-yui.js">
+    </script>
+	<script
+	    type="text/javascript"
+	    src="{{ STATIC_URL|default:'/static/' }}lib/js/MuseoSans.font.js">
+    </script>
+    <script type="text/javascript">
+        Cufon.replace('#title');
+        Cufon.replace('.action_link');
+	</script>
+	{% block extrajs %}{% endblock %}
 </body>
 </html>
