@@ -1,28 +1,32 @@
-{% extends "base.html" %}
+{% extends "limeade_mysql/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Databases</h1>
-
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_mysql_db_add %}">Add a new MySQL Database</a>
-</p>
-{% if object_list %}
-<table>
-<tr><th>Database</th><th>&nbsp;</th></tr>
-{% for db in object_list %}
-        <tr>
-        <td><a href="{% url limeade_mysql_db_edit db.1 %}">{{ db.0 }}</a></td>
-		<td><a href="{% url limeade_mysql_db_delete db.1 %}" class="action_delete">Delete</a></td>
-        </tr>
-{% endfor %}
-</table>
-<br />
-<p>
-To access your tables you can use <a href="http://v1.local/phpmyadmin/">phpMyAdmin</a>.
-</p>
-
-{% else %}
-<p>You don't have any MySQL Databases yet.</p>
-{% endif %}
-
+    <h1>{% trans "Databases" %}</h1>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_mysql_db_add %}">{% trans "Add a new MySQL Database" %}</a>
+    </p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>{% trans "Database" %}</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for db in object_list %}
+                <tr>
+                    <td><a href="{% url limeade_mysql_db_edit db.1 %}">{{ db.0 }}</a></td>
+                    <td><a href="{% url limeade_mysql_db_delete db.1 %}" class="action_delete">{% trans "Delete" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br />
+        <p>
+        {% blocktrans %}
+            To access your tables you can use <a href="http://v1.local/phpmyadmin/">phpMyAdmin</a>.
+        {% endblocktrans %}
+        </p>
+    {% else %}
+        <p>{% trans "You don't have any MySQL Databases yet." %}</p>
+    {% endif %}
 {% endblock %}

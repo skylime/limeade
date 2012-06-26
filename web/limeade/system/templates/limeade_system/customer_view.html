@@ -1,41 +1,58 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>{{ object.user.username }}</h1>
-
-<p class="action_box">
-<a href="{% url limeade_system_customer_edit   object.username %}">Edit</a>
-<a href="{% url limeade_system_customer_manage object.username %}">Manage</a>
-<a href="{% url limeade_system_customer_delete object.username %}" class="action_delete">Delete</a>
-</p>
-<table class="form">
-<tr><th>Name:</th><td>{{ object.first_name }} {{ object.last_name }}</td></tr>
-{% if object.company %}<tr><th>Firma:</th><td>{{ object.company }}</td></tr>{% endif %}
-<tr><th>Address:</th><td>{{ object.address }}</td></tr>
-<tr><th>Email:</th><td><a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a></td></tr>
-</table>
-
-<h4>Contracts</h4>
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_system_contract_add    object.username %}">Add new Contract</a>
-</p>
-<table>
-	<tr><th>Product</th><th>Domains</th><th>Actions</th></tr>
-{% for contract in contracts %}
-	<tr>
-	<td>{{ contract.product }}</td>
-	<td>
-		{% for domain in contract.domain_set.all %}
-			{{ domain }} 
-			<a href="{% url limeade_system_domain_delete slug=object.user.username contract_id=contract.id domain_id=domain.id%}" class="action_delete">Delete</a><br />
-		{% endfor %}
-	</td>
-	<td>
-		<a href="{% url limeade_system_domain_add slug=object.user.username contract_id=contract.id %}">Add Domain</a>
-		<a href="{% url limeade_system_contract_customize slug=object.user.username contract_id=contract.id %}">Customize</a>
-		<a href="{% url limeade_system_contract_delete slug=object.user.username contract_id=contract.id %}" class="action_delete">Delete</a>
-	</td>
-	</tr>
-{% endfor %}
-</table>
+    <h1>{{ object.user.username }}</h1>
+    <p class="action_box">
+        <a href="{% url limeade_system_customer_edit object.username %}">{% trans "Edit" %}</a>
+        <a href="{% url limeade_system_customer_manage object.username %}">{% trans "Manage" %}</a>
+        <a href="{% url limeade_system_customer_delete object.username %}" class="action_delete">{% trans "Delete" %}</a>
+    </p>
+    <table>
+        <tr>
+            <th>{% trans "Name:" %}</th>
+            <td>{{ object.first_name }} {{ object.last_name }}</td>
+        </tr>
+        {% if object.company %}
+            <tr>
+                <th>{% trans "Company:" %}</th>
+                <td>{{ object.company }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>{% trans "Address:" %}</th>
+            <td>{{ object.address }}</td>
+        </tr>
+        <tr>
+            <th>{% trans "Email:" %}</th>
+            <td><a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a></td>
+        </tr>
+    </table>
+    <h4>{% trans "Contracts" %}</h4>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_system_contract_add object.username %}">{% trans "Add new Contract" %}</a>
+    </p>
+    <table>
+	    <tr>
+	        <th>{% trans "Product" %}</th>
+	        <th>{% trans "Domains" %}</th>
+	        <th>{% trans "Actions" %}</th>
+        </tr>
+        {% for contract in contracts %}
+            <tr>
+                <td>{{ contract.product }}</td>
+                <td>
+                    {% for domain in contract.domain_set.all %}
+                        {{ domain }} <a href="{% url limeade_system_domain_delete slug=object.user.username contract_id=contract.id domain_id=domain.id%}" class="action_delete">{% trans "Delete" %}</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url limeade_system_domain_add slug=object.user.username contract_id=contract.id %}">{% trans "Add Domain" %}</a>
+                    <a href="{% url limeade_system_contract_customize slug=object.user.username contract_id=contract.id %}">{% trans "Customize" %}</a>
+                    <a href="{% url limeade_system_contract_delete slug=object.user.username contract_id=contract.id %}" class="action_delete">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

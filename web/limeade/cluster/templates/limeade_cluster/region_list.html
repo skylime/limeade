@@ -1,23 +1,26 @@
-{% extends "base.html" %}
+{% extends "limeade_cluster/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Regions</h1>
-
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_cluster_region_add %}">Add a new Region</a>
-</p>
-{% if object_list %}
-<table>
-<tr><th>Region</th><th>&nbsp;</th></tr>
-{% for region in object_list %}
-        <tr>
-        <td><a href="{% url limeade_cluster_region_edit region.pk %}">{{ region.name }}</a></td>
-		<td><a href="{% url limeade_cluster_region_delete region.pk %}" class="action_delete">Delete</a></td>
-        </tr>
-{% endfor %}
-</table>
-{% else %}
-<p>You don't have any Regions yet.</p>
-{% endif %}
-<br />
+    <h1>{% trans "Regions" %}</h1>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_cluster_region_add %}">{% trans "Add a new Region" %}</a>
+    </p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>{% trans "Region" %}</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for region in object_list %}
+                <tr>
+                    <td><a href="{% url limeade_cluster_region_edit region.pk %}">{{ region.name }}</a></td>
+                    <td><a href="{% url limeade_cluster_region_delete region.pk %}" class="action_delete">{% trans "Delete" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% trans "You don't have any Regions yet." %}</p>
+    {% endif %}
 {% endblock %}

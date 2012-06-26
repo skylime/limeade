@@ -1,19 +1,37 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% comment %}
+    TODO: restyle forms for limitsets
+{% endcomment %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Add Product</h1>
-
-<form method="POST" enctype="multipart/form-data" action=".">
-	<table class="form">
-        {{ form.as_table }}
-
-		{% for limitset in limitsets %}
-			<tr><th class="section" colspan="2">{{ limitset.verbose_name }}</th></tr>
-        	{{ limitset.as_table }}
-		{% endfor %}
-	</table>
-        {% csrf_token %}
-        <input type="submit" value="Save"/>
-</form>
-
+    <h1>{% trans "Add Product" %}</h1>
+    <form method="post" enctype="multipart/form-data" action=".">
+    {% csrf_token %}
+        <fieldset>
+            <legend>{% trans "Add Product" %}</legend>
+            {% include "forms/display_form.html" %}
+            {% for formset in limitsets %}
+                {{ formset.management_form }}
+                <h2>{{ formset.verbose_name }}</h2>
+                {% for form in formset %}
+                    {% include "forms/display_form.html" %}
+                {% endfor %}
+            {% endfor %}
+            {% comment %}
+            {% for limitset in limitsets %}
+                <h2>{{ limitset.verbose_name }}</h2>
+                {% with form=limitset %}
+                    {% include "forms/display_form.html" %}
+                {% endwith %}
+            {% endfor %}
+            {% endcomment %}
+            {% trans "Save" as submit_str %}
+            {% with submit_text=submit_str button_class="btn btn-success" %}
+                {% include "forms/display_form_submit.html" %}
+            {% endwith %}
+        </fieldset>
+    </form>
 {% endblock %}

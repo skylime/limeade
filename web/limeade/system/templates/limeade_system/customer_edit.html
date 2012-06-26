@@ -1,14 +1,18 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Edit {{ username }}</h1>
-
-<form method="POST" enctype="multipart/form-data" action=".">
-	<table class="form">
-        {{ form.as_table }}
-	</table>
-        {% csrf_token %}
-        <input type="submit" value="Save"/>
-</form>
-
+    <h1>{% trans "Edit" %} {{ username }}</h1>
+    <form method="post" enctype="multipart/form-data" action".">
+    {% csrf_token %}
+        <fieldset>
+            <legend>{% trans "Edit" %} {{ username }}</legend>
+            {% include "forms/display_form.html" %}
+            {% trans "Save" as submit_str %}
+            {% with submit_text=submit_str button_class="btn btn-success" %}
+                {% include "forms/display_form_submit.html" %}
+            {% endwith %}
+        </fieldset>
+    </form>
 {% endblock %}

@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Edit</h1>
-
-<form method="POST" enctype="multipart/form-data" action=".">
-	<table class="form">
-        {{ form.as_table }}
-		{% for limitset in limitsets %}
-			<tr><th class="section" colspan="2">{{ limitset.verbose_name }}</th></tr>
-        	{{ limitset.as_table }}
-		{% endfor %}
-	</table>
+    <h1>{% trans "Edit product" %}</h1>
+    <form method="post" enctype="multipart/form-data" action=".">
         {% csrf_token %}
-        <input type="submit" value="Save"/>
-</form>
-
+        <fieldset>
+            <legend>{% trans "Edit product" %}</legend>
+            {% include "forms/display_form.html" %}
+            {% trans "Save" as submit_str %}
+            {% with submit_text=submit_str button_class="btn btn-success" %}
+                {% include "forms/display_form_submit.html" %}
+            {% endwith %}
+        </fieldset>
+    </form>
 {% endblock %}

@@ -1,4 +1,6 @@
-{% extends "base.html" %}
+{% extends "limeade_cloud/base.html" %}
+
+{% load i18n %}
 
 {% block extrahead %}
     <script type="text/javascript">
@@ -11,34 +13,26 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1>VNC</h1>
-    <p>{{ host }}</p>
-    <p>{{ port }}</p>
-    
+    <h1>{% trans "VNC" %}</h1>
     <div id="noVNC_screen">
-    
         <div id="noVNC_status_bar" class="noVNC_status_bar">
-            <table border="0" width="100%">
+            <table>
                 <tr>
                     <td>
-                        <div id="noVNC_status">Loading</div>
+                        <div id="noVNC_status">{% trans "Loading" %}</div>
                     </td>
-                    <td width="1%">
+                    <td>
                         <div id="noVNC_buttons">
-                            <input type="button" value="Send Ctrl+Alt+Del" id="sendCtrlAltDelButton" />
+                            <input type="button" class="btn btn-danger" value="{% trans 'Send Ctrl+Alt+Del' %}" id="sendCtrlAltDelButton" />
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
-        
         <canvas id="noVNC_canvas" width="640px" height="20px">
-            Canvas not supported.
+            {% trans "Canvas not supported." %}
         </canvas>
-    
     </div>
-    
     <script type="text/javascript">
         "use strict";
         
@@ -144,6 +138,4 @@
         };
     
     </script>
-
 {% endblock %}
-

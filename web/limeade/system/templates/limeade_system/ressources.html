@@ -1,22 +1,26 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Ressources</h1>
-{% if limits %}
-<table>
-{% for groupname, limitgroup in limits.items %}
-	<tr><th colspan="4">{{ groupname }}</td></tr>
-	{% for limit in limitgroup %}
-        <tr>
-        <td>{{ limit.name }}:</td>
-		<td style="text-align: right">{% if limit.utilization %}{{ limit.utilization }} /{% else %}&nbsp;{% endif %}</td>
-		<td style="text-align: right">{{ limit.value }}</td>
-		<td>{{ limit.help_text }}</td>
-        </tr>
-	{% endfor %}
-{% endfor %}
-</table>
-{% else %}
-<p>Please buy some Products ;-)</p>
-{% endif %}
+    <h1>{% trans "Ressources" %}</h1>
+    {% if limits %}
+        {% for groupname, limitgroup in limits.items %}
+            <table>
+                <tr>
+                    <th colspan="4">{{ groupname }}</td>
+                </tr>
+                {% for limit in limitgroup %}
+                    <tr>
+                        <td>{{ limit.name }}:</td>
+                        <td style="text-align: right">{% if limit.utilization %}{{ limit.utilization }} /{% else %}&nbsp;{% endif %}</td>
+                        <td style="text-align: right">{{ limit.value }}</td>
+                        <td>{{ limit.help_text }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    {% else %}
+        <p>{% trans "Please buy some Products ;-)" %}</p>
+    {% endif %}
 {% endblock %}

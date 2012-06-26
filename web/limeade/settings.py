@@ -17,9 +17,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-EDITORAL_STAFF = MANAGERS + (
-    #(u'Your Name', 'your_email@domain.com'),
-)
+EDITORAL_STAFF = MANAGERS + ()
 
 DATABASES = {
     'default': {
@@ -65,6 +63,12 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'

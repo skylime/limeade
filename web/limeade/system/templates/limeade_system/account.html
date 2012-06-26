@@ -1,16 +1,34 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Account</h1>
-
-<table>
-<tr><td>Login:</td><td>{{ person.user.username }}</td></tr>
-<tr><td>Name:</td><td>{{ person.first_name }} {{ person.last_name }}</td></tr>
-{% if person.company %}<tr><td>Firma:</td><td>{{ person.company }}</td></tr>{% endif %}
-<tr><td>Address:</td><td>{{ person.address }}</td></tr>
-<tr><td>Email:</td><td><a href="mailto:{{ person.user.email }}">{{ person.user.email }}</a></td></tr>
-</table>
-<p>
-<a href="{% url django.contrib.auth.views.password_change %}">Passwort ändern</a>
-</p>
+    <h1>{% trans "Account" %}</h1>
+    <table>
+        <tr>
+            <td>{% trans "Login:" %}</td>
+            <td>{{ person.user.username }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "Name:" %}</td>
+            <td>{{ person.first_name }} {{ person.last_name }}</td>
+        </tr>
+        {% if person.company %}
+            <tr>
+                <td>{% trans "Company:" %}</td>
+                <td>{{ person.company }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td>{% trans "Address:" %}</td>
+            <td>{{ person.address }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "Email:" %}</td>
+            <td><a href="mailto:{{ person.user.email }}">{{ person.user.email }}</a></td>
+        </tr>
+    </table>
+    <p>
+        <a href="{% url django.contrib.auth.views.password_change %}" class="btn btn-inverse">{% trans "Change password" %}</a>
+    </p>
 {% endblock %}

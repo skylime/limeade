@@ -4,8 +4,8 @@ from .export import user_export
 
 
 urlpatterns = patterns('limeade.system.views',
-    url(r'^$', 'ressources'),
-    url(r'^account/$', 'account'),
+    url(r'^$', 'ressources', name='limeade_system_ressources'),
+    url(r'^account/$', 'account', name='limeade_system_account'),
     url(r'^customer/$',                        'customer_list',   name='limeade_system_customer_list'),
     url(r'^customer/add/$',                    'customer_add',    name='limeade_system_customer_add'),
     url(r'^customer/(?P<slug>[^/]+)/$',        'customer_view',   name='limeade_system_customer_view'),

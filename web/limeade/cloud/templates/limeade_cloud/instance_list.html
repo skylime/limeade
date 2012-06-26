@@ -1,35 +1,40 @@
-{% extends "base.html" %}
+{% extends "limeade_cloud/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Cloud Instances</h1>
-
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_cloud_instance_add %}">Add a new Instance</a>
-</p>
-{% if object_list %}
-<table>
-<tr><th>Instance</th><th>State</th><th>&nbsp;</th></tr>
-{% for instance in object_list %}
-        <tr>
-        <td>{{ instance.db.hostname }}</td>
-        <td>{{ instance.state }}</td>
-		<td>
-			{% if instance.db.active %}
-				{% if instance.state != 'running' %}
-					<a href="{% url limeade_cloud_instance_start instance.db.pk %}">Start</a>
-				{% endif %}
-				{% if instance.state != 'stopped' %}
-					<a href="{% url limeade_cloud_instance_stop instance.db.pk %}">Stop</a>
-				{% endif %}
-				<a href="{% url limeade_cloud_instance_restart instance.db.pk %}">Restart</a>
-				<a href="{% url limeade_cloud_instance_vnc instance.db.pk %}">VNC</a>
-				<a href="{% url limeade_cloud_instance_delete instance.db.pk %}" class="action_delete">Delete</a>
-			{% endif %}
-		</td>
-        </tr>
-{% endfor %}
-</table>
-{% else %}
-<p>You don't have any Instances yet.</p>
-{% endif %}
+    <h1>{% trans "Cloud Instances" %}</h1>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_cloud_instance_add %}">{% trans "Add a new Instance" %}</a>
+    </p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>{% trans "Instance" %}</th>
+                <th>{% trans "State" %}</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for instance in object_list %}
+                <tr>
+                    <td>{{ instance.db.hostname }}</td>
+                    <td>{{ instance.state }}</td>
+                    <td>
+                        {% if instance.db.active %}
+                            {% if instance.state != 'running' %}
+                                <a href="{% url limeade_cloud_instance_start instance.db.pk %}" class="btn btn-success">{% trans "Start" %}</a>
+                            {% endif %}
+                            {% if instance.state != 'stopped' %}
+                                <a href="{% url limeade_cloud_instance_stop instance.db.pk %}" class="btn btn-inverse">{% trans "Stop" %}</a>
+                            {% endif %}
+                            <a href="{% url limeade_cloud_instance_restart instance.db.pk %}" class="btn btn-warning">{% trans "Restart" %}</a>
+                            <a href="{% url limeade_cloud_instance_vnc instance.db.pk %}" class="btn btn-info">{% trans "VNC" %}</a>
+                            <a href="{% url limeade_cloud_instance_delete instance.db.pk %}" class="btn btn-danger action_delete">{% trans "Delete" %}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% trans "You don't have any Instances yet." %}</p>
+    {% endif %}
 {% endblock %}

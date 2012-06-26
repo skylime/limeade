@@ -1,29 +1,33 @@
-{% extends "base.html" %}
+{% extends "limeade_web/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>VHosts</h1>
-
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_web_vhost_add %}">Add a new VHost</a>
-</p>
-{% if object_list %}
-<table>
-<tr><th>VHost</th><th>&nbsp;</th></tr>
-{% for vhost in object_list %}
-        <tr>
-        <td><a href="{% url limeade_web_vhost_edit vhost.pk %}">{{ vhost }}</a></td>
-		<td>
-			{% if vhost.defaultvhost_set.count %}
-				<a href="{% url limeade_web_vhost_catchall_delete vhost.defaultvhost_set.get.pk %}">Delete Catch-All</a>
-			{% else %}
-				<a href="{% url limeade_web_vhost_catchall_set vhost.pk %}">Set Catch-All</a>
-			{% endif %}
-			<a href="{% url limeade_web_vhost_delete vhost.pk %}" class="action_delete">Delete</a>
-		</td>
-        </tr>
-{% endfor %}
-</table>
-{% else %}
-<p>You don't have any VHosts yet.</p>
-{% endif %}
+    <h1>{% trans "VHosts" %}</h1>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_web_vhost_add %}">{% trans "Add a new VHost" %}</a>
+    </p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>{% trans "VHost" %}</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for vhost in object_list %}
+                <tr>
+                    <td><a href="{% url limeade_web_vhost_edit vhost.pk %}">{{ vhost }}</a></td>
+                    <td>
+                        {% if vhost.defaultvhost_set.count %}
+                            <a href="{% url limeade_web_vhost_catchall_delete vhost.defaultvhost_set.get.pk %}">{% trans "Delete Catch-All" %}</a>
+                        {% else %}
+                            <a href="{% url limeade_web_vhost_catchall_set vhost.pk %}">{% trans "Set Catch-All" %}</a>
+                        {% endif %}
+                        <a href="{% url limeade_web_vhost_delete vhost.pk %}" class="action_delete">{% trans "Delete" %}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% trans "You don't have any VHosts yet." %}</p>
+    {% endif %}
 {% endblock %}

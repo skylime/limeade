@@ -1,36 +1,41 @@
-{% extends "base.html" %}
+{% extends "limeade_cluster/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Servers</h1>
-
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_cluster_server_add %}">Add a new Server</a>
-</p>
-{% if object_list %}
-<table>
-<tr><th>Hostname</th><th>Services</th><th>&nbsp;</th></tr>
-{% for server in object_list %}
-        <tr>
-        <td><a href="{% url limeade_cluster_server_edit server.pk %}">{{ server.hostname }}</a></td>
-		<td>
-			<ul>
-			{% for service in server.services.all %}
-		    <li>{{ service.name }}</li>
-		{% endfor %}
-		</ul></td>
-		<td>
-			{% if server.enabled %}
-				<a href="{% url limeade_cluster_server_disable server.pk %}">Disable</a>
-			{% else %}
-				<a href="{% url limeade_cluster_server_enable server.pk %}">Enable</a>
-			{% endif %}
-			<a href="{% url limeade_cluster_server_delete server.pk %}" class="action_delete">Delete</a>
-		</td>
-        </tr>
-{% endfor %}
-</table>
-{% else %}
-<p>You don't have any Servers yet.</p>
-{% endif %}
-<br />
+    <h1>{% trans "Servers" %}</h1>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_cluster_server_add %}">{% trans "Add a new Server" %}</a>
+    </p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>{% trans "Hostname" %}</th>
+                <th>{% trans "Services" %}</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for server in object_list %}
+                <tr>
+                    <td><a href="{% url limeade_cluster_server_edit server.pk %}">{{ server.hostname }}</a></td>
+                    <td>
+                        <ul>
+                        {% for service in server.services.all %}
+                            <li>{{ service.name }}</li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        {% if server.enabled %}
+                            <a href="{% url limeade_cluster_server_disable server.pk %}">{% trans "Disable" %}</a>
+                        {% else %}
+                            <a href="{% url limeade_cluster_server_enable server.pk %}">{% trans "Enable" %}</a>
+                        {% endif %}
+                        <a href="{% url limeade_cluster_server_delete server.pk %}" class="action_delete">{% trans "Delete" %}</a>
+                    </td>
+                    </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% trans "You don't have any Servers yet." %}</p>
+    {% endif %}
 {% endblock %}

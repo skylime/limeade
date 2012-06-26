@@ -1,22 +1,26 @@
-{% extends "base.html" %}
+{% extends "limeade_system/base.html" %}
+
+{% load i18n %}
 
 {% block content %}
-<h1>Products</h1>
-
-<p class="action_box">
-<span class="lime action_link">+</span><a href="{% url limeade_system_product_add %}">Add a new Product</a>
-</p>
-{% if object_list %}
-<table>
-<tr><th>Name</th><th>&nbsp;</th></tr>
-{% for product in object_list %}
-        <tr>
-        <td><a href="{% url limeade_system_product_edit product.pk %}">{{ product.name }}</a></td>
-		<td><a href="{% url limeade_system_product_delete product.pk %}" class="action_delete">Delete</a></td>
-        </tr>
-{% endfor %}
-</table>
-{% else %}
-<p>You don't have any products yet.</p>
-{% endif %}
+    <h1>{% trans "Products" %}</h1>
+    <p class="action_box">
+        <span class="lime action_link">+</span><a href="{% url limeade_system_product_add %}">{% trans "Add a new Product" %}</a>
+    </p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for product in object_list %}
+                <tr>
+                    <td><a href="{% url limeade_system_product_edit product.pk %}">{{ product.name }}</a></td>
+                    <td><a href="{% url limeade_system_product_delete product.pk %}" class="action_delete">{% trans "Delete" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% trans "You don't have any products yet." %}</p>
+    {% endif %}
 {% endblock %}
