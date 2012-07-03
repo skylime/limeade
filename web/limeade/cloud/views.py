@@ -142,12 +142,42 @@ def instance_restart(request, slug):
 
 @login_required
 def instance_vnc(request, slug):
+    i = get_object_or_404(Instance, pk=slug)
+    instance_id = i.pk
+    token = request.session.session_key
+    node_host = settings.NODE_HOST
+    node_port = settings.NODE_PORT
+    return render_to_response(
+        'limeade_cloud/instance_vnc.html', {'id': instance_id, 'token': token, 
+        'host': node_host, 'port': node_port}, 
+        context_instance=RequestContext(request)
+    )
+
+
+def instance_vnc_auth(request, slug, token):
+    from django.contrib.sessions.models import Session
     from urlparse import urlparse
-    VNC_PORT = 5900
+    from django.utils import simplejson
+    
+    display_port = int(slug) - 1
+    status_code = 200
+    vnc_port = 5900 + display_port
+    
+    try:
+        s = Session.objects.get(pk=token)
+    except Session.DoesNotExist:
+        status_code = 500
+    
     i = get_object_or_404(Instance, pk=slug)
     host = urlparse(i.node.uri).netloc
-    return render_to_response('limeade_cloud/novnc.html',{
-    'host': host, 'port': VNC_PORT}, context_instance=RequestContext(request))
+    
+    data = {
+        'source_host': settings.PROXY_HOST,
+        'source_port': settings.PROXY_PORT,
+        'target_host': host,
+        'target_port': vnc_port
+    }
+    return HttpResponse(simplejson.dumps(data), mimetype='application/json', status=status_code)
 
 
 # ssh keys
