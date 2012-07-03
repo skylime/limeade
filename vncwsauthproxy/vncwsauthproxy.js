@@ -72,6 +72,8 @@ function start_new_proxy(shost, sport, thost, tport)
         });
         wsServer.on('connection', new_client);
     });
+    // Attach Flash policyfile answer service.
+    policyfile.createServer().listen(-1, proxy_server);
 }
 
 function send_data_to_client(res, chunk, instance_id)
@@ -156,7 +158,4 @@ http_server = http.createServer(http_request);
 http_server.listen(6008, function() {
     console.log((new Date()) + ' Server is listening on port 6008');
 });
-
-// Attach Flash policyfile answer service.
-policyfile.createServer().listen(-1, proxy_server);
 
