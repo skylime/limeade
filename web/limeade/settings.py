@@ -162,10 +162,7 @@ CELERY_RESULT_SERIALIZER = "json"
 
 # VNC
 NODE_HOST = "127.0.0.1"
-NODE_PORT = 6008
-
-PROXY_HOST = "127.0.0.1"
-PROXY_PORT = 8080
+NODE_PORT = 8080
 
 try:
     from local_settings import * 

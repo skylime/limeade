@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sessions.models import Session
 from django.shortcuts import render_to_response
+from django.contrib.auth.models import User
 from django.template import RequestContext
+from django.http import HttpResponse
 from django.utils import simplejson
 from django.conf import settings
 from django.http import Http404
@@ -55,17 +57,17 @@ def instance_vnc_auth(request, slug, token):
     
     try:
         s = Session.objects.get(pk=token)
-        user = User.objects.get(pk=s.get_decoded().get('_auth_user_id'))
+        user_id = s.get_decoded().get('_auth_user_id')
+        user = User.objects.get(pk=user_id)
         i = Instance.objects.get(pk=slug, owner=user)
     except ObjectDoesNotExist:
         status_code = 500
     
     host = urlparse(i.node.uri).netloc
+    
     data = {
-        'source_host': settings.PROXY_HOST,
-        'source_port': settings.PROXY_PORT,
-        'target_host': host,
-        'target_port': vnc_port
+        'host': host,
+        'port': vnc_port
     }
     
     return HttpResponse(simplejson.dumps(data), mimetype='application/json', status=status_code)
