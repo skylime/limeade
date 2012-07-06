@@ -36,14 +36,16 @@
     <script type="text/javascript">
         "use strict";
         
-        var rfb, msg;
+        var rfb;
         
         function passwordRequired(rfb)
         {
+            var msg;
+            var msg;
             msg = '<form onsubmit="return setPassword();"';
-            msg += ' style="margin-bottom: 0px;">';
-            msg += 'Password required: ';
-            msg += '<input type="password" size="10 id="password_input" class="noVNC_status">';
+            msg += '  style="margin-bottom: 0px">';
+            msg += 'Password Required: ';
+            msg += '<input type=password size=10 id="password_input" class="noVNC_status">';
             msg += '<\/form>';
             $D('noVNC_status_bar').setAttribute("class", "noVNC_status_warn");
             $D('noVNC_status').innerHTML = msg;
@@ -64,11 +66,9 @@
         function updateState(rfb, state, oldstate, msg)
         {
             var s, sb, cad, level;
-            
             s = $D('noVNC_status');
             sb = $D('noVNC_status_bar');
             cad = $D('sendCtrlAltDelButton');
-            
             switch (state) {
                 case 'failed':
                     level = "error";
@@ -90,7 +90,7 @@
                     break;
             }
             
-            if (state == "normal") {
+            if (state === "normal") {
                 cad.disabled = false;
             } else {
                 cad.disabled = true;
@@ -102,58 +102,36 @@
             }
         }
         
-        function get_vnc_node()
+        window.onload = function()
         {
-            $.ajax({
-                cache: false,
-                url: 'http://{{ host }}:{{ port }}',
-                data: {
-                    instance_id: '{{ id }}',
-                    token: '{{ token }}',
-                    url: '{% url limeade_cloud_instance_vnc_auth slug=id token=token %}'
-                }
-            }).done(function(data) {
-                console.log((new Date()) + " request successfully generated.");
-                
-                var host, port, password, path, token;
-                
-                $D('sendCtrlAltDelButton').style.display = "inline";
-                $D('sendCtrlAltDelButton').onclick = sendCtrlAltDel;
-                
-                var options = JSON.parse(data);
-                
-                console.log(options);
-                
-                host = options.source_host;
-                port = options.source_port;
-                token = null;
-                path = 'websockify';
-                password = '';
-                
-                if ((!host) || (!port)) {
-                    updateState('failed', "Host and port must be specified.");
-                    return;
-                }
-                
-                console.log((new Date()) + ' try to connect to WebSocket.');
-                
-                rfb = new RFB({
-                    'target': $D('noVNC_canvas'),
-                    'encrypt': false,
-                    'true_color': true,
-                    'local_cursor': true,
-                    'shared': true,
-                    'view_only': false,
-                    'updateState': updateState,
-                    'onPasswordRequired': passwordRequired
-                });
-                
-                rfb.connect(host, port, password, path);
-            }).fail(function(jqXHR, textStatus) {
-                console.log((new Date()) + " request failed: " + textStatus);
-            });
-        }
+            var host, port, password, path, token;
+            
+            $D('sendCtrlAltDelButton').style.display = "inline";
+            $D('sendCtrlAltDelButton').onclick = sendCtrlAltDel;
+            
+            document.title = unescape(WebUtil.getQueryVar('title', 'noVNC'));
+            
+            host = '{{ host }}';
+            port = '{{ port }}';
+            path = 'websockify?instance_id={{ id }}&token={{ token }}&url={% url limeade_cloud_instance_vnc_auth slug=id token=token %}';
+            password = ''
+            
+            if ((!host) || (!port)) {
+                updateState('failed', "Must specify host and port");
+                return;
+            }
+            
+            rfb = new RFB({'target':       $D('noVNC_canvas'),
+                           'encrypt':      WebUtil.getQueryVar('encrypt',
+                                    (window.location.protocol === "https:")),
+                           'true_color':   WebUtil.getQueryVar('true_color', true),
+                           'local_cursor': WebUtil.getQueryVar('cursor', true),
+                           'shared':       WebUtil.getQueryVar('shared', true),
+                           'view_only':    WebUtil.getQueryVar('view_only', false),
+                           'updateState':  updateState,
+                           'onPasswordRequired':  passwordRequired});
+            rfb.connect(host, port, password, path);
+        };
         console.log((new Date()) + ' requesting VNC.');
-        get_vnc_node();
     </script>
 {% endblock %}
