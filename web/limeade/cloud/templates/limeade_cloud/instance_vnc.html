@@ -109,11 +109,9 @@
             $D('sendCtrlAltDelButton').style.display = "inline";
             $D('sendCtrlAltDelButton').onclick = sendCtrlAltDel;
             
-            document.title = unescape(WebUtil.getQueryVar('title', 'noVNC'));
-            
             host = '{{ host }}';
             port = '{{ port }}';
-            path = 'websockify?instance_id={{ id }}&token={{ token }}&url={% url limeade_cloud_instance_vnc_auth slug=id token=token %}';
+            path = 'websockify?instance_id={{ id }}';
             password = ''
             
             if ((!host) || (!port)) {
@@ -121,15 +119,16 @@
                 return;
             }
             
-            rfb = new RFB({'target':       $D('noVNC_canvas'),
-                           'encrypt':      WebUtil.getQueryVar('encrypt',
-                                    (window.location.protocol === "https:")),
-                           'true_color':   WebUtil.getQueryVar('true_color', true),
-                           'local_cursor': WebUtil.getQueryVar('cursor', true),
-                           'shared':       WebUtil.getQueryVar('shared', true),
-                           'view_only':    WebUtil.getQueryVar('view_only', false),
-                           'updateState':  updateState,
-                           'onPasswordRequired':  passwordRequired});
+            rfb = new RFB({
+                'target': $D('noVNC_canvas'),
+                'encrypt': false,
+                'true_color': true,
+                'local_cursor': true,
+                'shared': true,
+                'view_only': false,
+                'updateState': updateState,
+                'onPasswordRequired': passwordRequired
+            });
             rfb.connect(host, port, password, path);
         };
         console.log((new Date()) + ' requesting VNC.');

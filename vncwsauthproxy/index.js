@@ -20,6 +20,14 @@ var serverOptions = {
 }
 
 
+function extractSessionID(cookie) {
+    var session_id = cookie.replace("sessionid=", "")
+                           .replace(";", "")
+                           .replace("csrftoken=", "")
+                           .slice(0, 32);
+    return session_id;
+}
+
 function handleProxy(ws, vncSocket) {
     vncSocket.on('begin', function() {
         console.log('Connected to target');
@@ -53,17 +61,15 @@ function connectTarget(host, port, callback) {
     callback(vncSocket);
 }
 
-function checkValidation(path, callback) {
+function checkValidation(path, session, callback) {
     var params      = url.parse(path, true, false);
     var instance_id = params.query.instance_id;
-    var token       = params.query.token;
-    var uri         = params.query.url;
     
     // make API call on Django
     var options = {
         host: django.host,
         port: django.port,
-        path: uri
+        path: '/cloud/instance/' + instance_id + '/' + session + '/'
     }
     
     var req = http.request(options, function(res) {
@@ -118,7 +124,9 @@ httpServer.listen(serverOptions.port, serverOptions.host, function() {
         console.log('New client tries to connect.');
         // check if request was valid
         var path = ws.upgradeReq.url;
-        checkValidation(path, function(host, port) {
+        var cookie = ws.upgradeReq.headers.cookie.toString();
+        var session = extractSessionID(cookie);
+        checkValidation(path, session, function(host, port) {
             // request is valid, connect to vnc server
             connectTarget(host, port, function(vncSocket) {
                 // after connection, handle interaction
