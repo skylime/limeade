@@ -1,7 +1,15 @@
+/**
+ * A Websocket to TCP proxy in node.js.
+ *
+ * know to work with node.js 0.6.* and 0.8.*
+ *
+ * required modules: ws, policyfile
+ *     $ npm install ws policyfile
+ */
+
 // require needed node modules
 var WebSocketServer = require('ws').Server;
 var policyfile      = require('policyfile');
-var base64          = require('base64/build/Release/base64');
 var Buffer          = require('buffer').Buffer;
 var http            = require('http');
 var url             = require('url');
@@ -34,7 +42,7 @@ function handleProxy(ws, vncSocket) {
     });
     
     vncSocket.on('data', function(data) {
-        ws.send(base64.encode(new Buffer(data)));
+        ws.send(new Buffer(data).toString('base64'));
     });
     
     vncSocket.on('end', function() {
@@ -42,7 +50,7 @@ function handleProxy(ws, vncSocket) {
     });
     
     ws.on('message', function(msg) {
-        vncSocket.write(base64.decode(msg), 'binary');
+        vncSocket.write(new Buffer(msg, 'base64').toString('binary'), 'binary');
     });
     
     ws.on('close', function(code, reason) {
@@ -83,7 +91,7 @@ function checkValidation(path, session, callback) {
                 callback(host, port);
             });
         } else {
-            console.log('Permission denied. Status Code: ' + res.statuscode);
+            console.log('Permission denied. Status Code: ' + res.statusCode);
             response.setEncoding('utf8');
             response.writeHead(403, {
                 'Content-Type': 'text/plain',
