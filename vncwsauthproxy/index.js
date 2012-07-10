@@ -191,7 +191,6 @@ httpServer.listen(serverOptions.port, serverOptions.host, function() {
         // check if request was valid
         var path = ws.upgradeReq.url;
         var cookie = ws.upgradeReq.headers.cookie.toString();
-        cookie = 'sessionid=djfghjsdgfhjdfdsf';
         var session = extractSessionID(cookie);
         checkValidation(path, session, function(host, port) {
             // request is valid, connect to vnc server
