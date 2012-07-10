@@ -31,7 +31,6 @@ def instance_vnc(request, slug):
     except Instance.DoesNotExist:
         raise Http404
     
-    token = request.session.session_key
     node_host = settings.NODE_HOST
     node_port = settings.NODE_PORT
     
@@ -54,6 +53,7 @@ def instance_vnc_auth(request, slug, token):
     """
     status_code = 200
     vnc_port = 5900
+    host = None
     
     try:
         s = Session.objects.get(pk=token)
@@ -63,7 +63,8 @@ def instance_vnc_auth(request, slug, token):
     except ObjectDoesNotExist:
         status_code = 500
     
-    host = urlparse(i.node.uri).netloc
+    if i:
+        host = urlparse(i.node.uri).netloc
     
     data = {
         'host': host,
