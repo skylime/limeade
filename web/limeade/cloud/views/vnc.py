@@ -33,9 +33,10 @@ def instance_vnc(request, slug):
     
     node_host = settings.NODE_HOST
     node_port = settings.NODE_PORT
+    token = request.session.session_key
     
     return render_to_response('limeade_cloud/instance_vnc.html', {'id': i, 
-    'host': node_host, 'port': node_port}, context_instance=RequestContext(request))
+    'host': node_host, 'port': node_port, 'token': token}, context_instance=RequestContext(request))
 
 
 def instance_vnc_auth(request, slug, token):
