@@ -62,27 +62,6 @@ Logging.get_logging = function() {
 Logging.init_logging();
 
 
-function extractSessionID(cookie) {
-    var session_id = '';
-    
-    cookie = cookie.split("; ");
-    Logging.Debug('Cookie received: ' + cookie);
-    
-    for (var i = 0; i < cookie.length; i++) {
-        var loc = cookie[i].search(/session/);
-        if (loc >= 0) {
-            session_id = cookie[i].toString().replace('sessionid=', '');
-            Logging.Debug('Session ID: ' + session_id);
-        }
-    }
-    
-    if (session_id == '')
-        Logging.Error('No Session ID found in cookie!');
-    
-    return session_id;
-}
-
-
 function handleProxy(ws, vncSocket) {
     vncSocket.on('begin', function() {
         Logging.Debug('Connected to target');
@@ -117,15 +96,12 @@ function connectTarget(host, port, callback) {
         Logging.Info('Start proxying from ' + serverOptions.host + ':' + serverOptions.port + ' to ' + host + ':' + port + "\n");
         callback(vncSocket);
     } catch (e) {
-        Logging.Error('Could not create connection: ' + e.message);
+        Logging.Error('Could not create connection to VNC: ' + e.message);
     }
 }
 
 
-function checkValidation(path, session, callback) {
-    var params      = url.parse(path, true, false);
-    var instance_id = params.query.instance_id;
-    
+function checkValidation(instance_id, session, callback) {
     // make API call on Django
     var options = {
         host: django.host,
@@ -144,8 +120,8 @@ function checkValidation(path, session, callback) {
                 callback(host, port);
             });
         } else {
+            Logging.Warn('Permission denied. Status Code: ' + res.statusCode);
             try {
-                Logging.Warn('Permission denied. Status Code: ' + res.statusCode);
                 res.writeHead(res.statusCode, {
                     'Content-Type': 'text/plain',
                     'Access-Control-Allow-Origin': '*'
@@ -162,6 +138,33 @@ function checkValidation(path, session, callback) {
         Logging.Error('Problem with request: ' + e.message);
     });
     req.end();
+}
+
+
+function extractParams(header, callback) {
+    var path        = header.url;
+    var cookie      = header.headers.cookie.toString();
+    var params      = url.parse(path, true, false);
+    var instance_id = params.query.instance_id;
+    var session_id  = '';
+    
+    cookie = cookie.split("; ");
+    Logging.Debug('Cookie received: ' + cookie);
+    
+    for (var i = 0; i < cookie.length; i++) {
+        var loc = cookie[i].search(/session/);
+        if (loc >= 0) {
+            session_id = cookie[i].toString().replace('sessionid=', '');
+            Logging.Debug('Session ID: ' + session_id);
+        }
+    }
+    
+    if (session_id == '') {
+        Logging.Error('No Session ID found in cookie! Use delivered token');
+        session_id = params.query.token;
+    }
+    
+    callback(instance_id, session_id);
 }
 
 
@@ -188,15 +191,15 @@ httpServer.listen(serverOptions.port, serverOptions.host, function() {
     
     wsServer.on('connection', function(ws) {
         Logging.Info('New client tries to connect.');
-        // check if request was valid
-        var path = ws.upgradeReq.url;
-        var cookie = ws.upgradeReq.headers.cookie.toString();
-        var session = extractSessionID(cookie);
-        checkValidation(path, session, function(host, port) {
-            // request is valid, connect to vnc server
-            connectTarget(host, port, function(vncSocket) {
-                // after connection, handle interaction
-                handleProxy(ws, vncSocket);
+        // extract params
+        extractParams(ws.upgradeReq, function(path, session) {
+            // check if request was valid
+            checkValidation(path, session, function(host, port) {
+                // request is valid, connect to vnc server
+                connectTarget(host, port, function(vncSocket) {
+                    // after connection, handle interaction
+                    handleProxy(ws, vncSocket);
+                });
             });
         });
     });
