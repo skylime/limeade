@@ -16,6 +16,22 @@ function get_INCLUDE_URI() {
     return (typeof INCLUDE_URI !== "undefined") ? INCLUDE_URI : "include/";
 }
 
+function get_TOKEN() {
+    return (typeof TOKEN !== "undefined") ? TOKEN : "1234567890";
+}
+
+function get_INSTANCE_ID() {
+    return (typeof INSTANCE_ID !== "undefined") ? INSTANCE_ID : "1";
+}
+
+function get_HOST() {
+    return (typeof HOST !== "undefined") ? HOST : "127.0.0.1";
+}
+
+function get_PORT() {
+    return (typeof PORT !== "undefined") ? PORT : "8080";
+}
+
 (function () {
     "use strict";
 

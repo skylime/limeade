@@ -1823,9 +1823,9 @@ that.sendKey = function(code, down) {
 
 that.clipboardPasteFrom = function(text) {
     if (rfb_state !== "normal") { return; }
-    //Util.Debug(">> clipboardPasteFrom: " + text.substr(0,40) + "...");
+    Util.Debug(">> clipboardPasteFrom: " + text.substr(0,40) + "...");
     ws.send(clientCutText(text));
-    //Util.Debug("<< clipboardPasteFrom");
+    Util.Debug("<< clipboardPasteFrom");
 };
 
 // Override internal functions for testing
