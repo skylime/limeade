@@ -2,135 +2,197 @@
 
 {% load i18n %}
 
+{% block stylesheets %}
+    <link
+        rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="{{ STATIC_URL|default:'/static/' }}lib/css/novnc.css" />
+{% endblock %}
+
 {% block content %}
     <h1>{% trans "VNC" %}</h1>
-    <div id="noVNC_screen">
-        <div id="noVNC_status_bar" class="noVNC_status_bar">
-            <table>
-                <tr>
-                    <td>
-                        <div id="noVNC_status">{% trans "Loading" %}</div>
-                    </td>
-                    <td>
-                        <div id="noVNC_buttons">
-                            <input type="button" class="btn btn-danger" value="{% trans 'Send Ctrl+Alt+Del' %}" id="sendCtrlAltDelButton" />
-                        </div>
-                    </td>
-                </tr>
-            </table>
+    <div id="noVNC-control-bar" class="clearfix">
+        <!--noVNC Mobile Device only Buttons-->
+        <div class="noVNC-buttons-left">
+            <input
+                type="image"
+                src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/drag.png"
+                id="noVNC_view_drag_button"
+                class="noVNC_status_button"
+                title="Move/Drag Viewport"
+                onclick="START.setViewDrag();" />
+            <div id="noVNC_mobile_buttons">
+                <input
+                    type="image"
+                    src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/mouse_none.png"
+                    id="noVNC_mouse_button0"
+                    class="noVNC_status_button"
+                    onclick="START.setMouseButton(1);" />
+                <input
+                    type="image"
+                    src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/mouse_left.png"
+                    id="noVNC_mouse_button1"
+                    class="noVNC_status_button"
+                    onclick="START.setMouseButton(2);" />
+                <input
+                    type="image"
+                    src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/mouse_middle.png"
+                    id="noVNC_mouse_button2"
+                    class="noVNC_status_button"
+                    onclick="START.setMouseButton(4);" />
+                <input
+                    type="image"
+                    src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/mouse_right.png"
+                    id="noVNC_mouse_button4"
+                    class="noVNC_status_button"
+                    onclick="START.setMouseButton(0);" />
+                <input
+                    type="image"
+                    src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/keyboard.png"
+                    id="showKeyboard"
+                    class="noVNC_status_button"
+                    value="Keyboard"
+                    title="Show Keyboard"
+                    onclick="START.showKeyboard()" />
+                <input
+                    type="email"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    id="keyboardinput"
+                    class="noVNC_status_button"
+                    onKeyDown="onKeyDown(event);"
+                    onblur="START.keyInputBlur();" />
+            </div>
         </div>
-        <canvas id="noVNC_canvas" width="640px" height="20px">
-            {% trans "Canvas not supported." %}
-        </canvas>
+        <div id="noVNC_status_bar" class="noVNC_status_bar"><strong>{% trans "Status:" %}</strong> <span id="noVNC_status">{% trans "Loading" %}</span></div>
+        <!--noVNC Buttons-->
+        <div class="noVNC-buttons-right">
+            <input
+                type="image"
+                src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/ctrlaltdel.png"
+                id="sendCtrlAltDelButton"
+                class="noVNC_status_button"
+                title="Send Ctrl-Alt-Del"
+                onclick="START.sendCtrlAltDel();" />
+            <input
+                type="image"
+                src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/clipboard.png"
+                id="clipboardButton"
+                class="noVNC_status_button"
+                title="Clipboard"
+                onclick="START.toggleClipboardPanel();" />
+            <input
+                type="image"
+                src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/settings.png"
+                id="settingsButton" class="noVNC_status_button"
+                title="Settings"
+                onclick="START.toggleSettingsPanel();" />
+            <input
+                type="image"
+                src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/connect.png"
+                id="connectButton"
+                class="noVNC_status_button"
+                title="Connect"
+                onclick="START.toggleConnectPanel()" />
+            <input
+                type="image"
+                src="{{ STATIC_URL|default:'/static/' }}lib/images/novnc/disconnect.png"
+                id="disconnectButton"
+                class="noVNC_status_button"
+                title="Disconnect"
+                onclick="START.disconnect()" />
+        </div>
+        <!-- Clipboard Panel -->
+        <div id="noVNC_clipboard" class="triangle-right top">
+            <textarea
+                id="noVNC_clipboard_text"
+                rows="5"
+                onfocus="START.displayBlur();"
+                onblur="START.displayFocus();"
+                onchange="START.clipSend();"></textarea>
+            <br />
+            <input
+                id="noVNC_clipboard_clear_button"
+                type="button"
+                class="btn btn-inverse"
+                value="{% trans "Clear" %}"
+                onclick="START.clipClear();" />
+        </div>
+        <!-- Settings Panel -->
+        <div id="noVNC_settings" class="triangle-right top">
+            <span id="noVNC_settings_menu" onmouseover="START.displayBlur();" onmouseout="START.displayFocus();">
+                <ul>
+                    <li><input id="noVNC_encrypt" type="checkbox" /> {% trans "Encrypt" %}</li>
+                    <li><input id="noVNC_true_color" type="checkbox" checked="checked" /> {% trans "True Color" %}</li>
+                    <li><input id="noVNC_cursor" type="checkbox" /> {% trans "Local Cursor" %}</li>
+                    <li><input id="noVNC_clip" type="checkbox" /> {% trans "Clip to Window" %}</li>
+                    <li><input id="noVNC_shared" type="checkbox" checked="checked" /> {% trans "Shared Mode" %}</li>
+                    <li><input id="noVNC_view_only" type="checkbox" /> {% trans "View Only" %}</li>
+                    <li>
+                        <label>{% trans "Connect Timeout (s)" %}</label>
+                        <input id="noVNC_connectTimeout" type="text" />
+                    </li>
+                    <li>
+                        <label>{% trans "Path" %}</label>
+                        <input id="noVNC_path" type="text" value="websockify?instance_id={{ id }}&token={{ token }}" disabled="disabled" />
+                    </li>
+                    <li>
+                        <label>{% trans "Repeater ID" %}</label>
+                        <input id="noVNC_repeaterID" type="text" value="" />
+                    </li>
+                    <li><input type="button" id="noVNC_apply" value="{% trans "Apply" %}" class="btn btn-success" onclick="START.settingsApply()" /></li>
+                </ul>
+            </span>
+        </div>
+        <!-- Connection Panel -->
+        <div id="noVNC_controls" class="triangle-right top">
+            <ul>
+                <li>
+                    <label>{% trans "Host:" %}</label>
+                    <input id="noVNC_host" type="text" value="{{ host }}" disabled="disabled" />
+                </li>
+                <li>
+                    <label>{% trans "Port:" %}</label>
+                    <input id="noVNC_port" type="text" value="{{ port }}" disabled="disabled" />
+                </li>
+                <li>
+                    <label>{% trans "Password:" %}</label>
+                    <input id="noVNC_password" type="password" disabled="disabled" />
+                </li>
+                <li><input id="noVNC_connect_button" type="button" class="btn btn-success" value="Connect" onclick="START.connect();"></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="noVNC_screen">
+        <div id="noVNC_screen_pad"></div>
+        <!-- HTML5 Canvas -->
+        <div id="noVNC_container">
+            <canvas id="noVNC_canvas" width="640px" height="20px">
+                {% trans "Canvas not supported." %}
+            </canvas>
+        </div>
     </div>
 {% endblock %}
 
 {% block extrajs %}
     <script type="text/javascript">
         INCLUDE_URI = '{{ STATIC_URL|default:'/static/' }}lib/js/novnc/include/';
+        TOKEN = '{{ token }}';
+        INSTANCE_ID = '{{ id }}';
+        HOST = '{{ host }}';
+        PORT = '{{ port }}';
     </script>
     <script
         type="text/javascript"
         src="{{ STATIC_URL|default:'/static/' }}lib/js/novnc/include/vnc.js">
     </script>
+    <script
+        type="text/javascript"
+        src="{{ STATIC_URL|default:'/static/' }}lib/js/novnc/start.js">
+    </script>
     <script type="text/javascript">
-        "use strict";
-        
-        var rfb;
-        
-        function passwordRequired(rfb)
-        {
-            var msg;
-            var msg;
-            msg = '<form onsubmit="return setPassword();"';
-            msg += '  style="margin-bottom: 0px">';
-            msg += 'Password Required: ';
-            msg += '<input type=password size=10 id="password_input" class="noVNC_status">';
-            msg += '<\/form>';
-            $D('noVNC_status_bar').setAttribute("class", "noVNC_status_warn");
-            $D('noVNC_status').innerHTML = msg;
-        }
-        
-        function setPassword()
-        {
-            rfb.sendPassword($D('password_input').value);
-            return false;
-        }
-        
-        function sendCtrlAltDel()
-        {
-            rfb.sendCtrlAltDel();
-            return false;
-        }
-        
-        function updateState(rfb, state, oldstate, msg)
-        {
-            var s, sb, cad, level;
-            s = $D('noVNC_status');
-            sb = $D('noVNC_status_bar');
-            cad = $D('sendCtrlAltDelButton');
-            switch (state) {
-                case 'failed':
-                    level = "error";
-                    break;
-                case 'fatal':
-                    level = "error";
-                    break;
-                case 'normal':
-                    level = "normal";
-                    break;
-                case 'disconnected':
-                    level = "normal";
-                    break;
-                case 'loaded':
-                    level = "normal";
-                    break;
-                default:
-                    level = "warn";
-                    break;
-            }
-            
-            if (state === "normal") {
-                cad.disabled = false;
-            } else {
-                cad.disabled = true;
-            }
-            
-            if (typeof(msg) !== 'undefined') {
-                sb.setAttribute("class", "noVNC_status_" + level);
-                s.innerHTML = msg;
-            }
-        }
-        
-        window.onload = function()
-        {
-            var host, port, password, path, token;
-            
-            $D('sendCtrlAltDelButton').style.display = "inline";
-            $D('sendCtrlAltDelButton').onclick = sendCtrlAltDel;
-            
-            host = '{{ host }}';
-            port = '{{ port }}';
-            path = 'websockify?instance_id={{ id }}';
-            password = ''
-            
-            if ((!host) || (!port)) {
-                updateState('failed', "Must specify host and port");
-                return;
-            }
-            
-            rfb = new RFB({
-                'target': $D('noVNC_canvas'),
-                'encrypt': false,
-                'true_color': true,
-                'local_cursor': true,
-                'shared': true,
-                'view_only': false,
-                'updateState': updateState,
-                'onPasswordRequired': passwordRequired
-            });
-            rfb.connect(host, port, password, path);
-        };
-        console.log((new Date()) + ' requesting VNC.');
+        window.onload = START.load;
     </script>
 {% endblock %}

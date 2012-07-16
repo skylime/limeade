@@ -1,0 +1,248 @@
+/*** default layout ***/
+#noVNC-control-bar {
+    position: relative;
+    margin-bottom: 1em;
+}
+
+#noVNC-control-bar ul {
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    padding: 0;
+}
+
+.noVNC-buttons-left {
+    float: left;
+    width: 20%;
+}
+
+.noVNC-buttons-right {
+    float: right;
+    width: 20%;
+    text-align: right;
+}
+
+/*** don't display at startup ***/
+#noVNC_view_drag_button,
+#noVNC_clipboard,
+#sendCtrlAltDelButton,
+#noVNC_mobile_buttons,
+#noVNC_settings,
+#noVNC_controls {
+    display: none;
+}
+
+/*** clipboard panel ***/
+#noVNC_clipboard {
+    position: absolute;
+    z-index: 10;
+    top: 40px;
+    right: 102px;
+    border: 1px solid #ccc;
+    background-color: #e6e8e0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    width: 400px;
+}
+
+#noVNC_clipboard_text {
+    width: 95%;
+}
+
+/*** connect panel ***/
+#noVNC_controls {
+    position: absolute;
+    z-index: 10;
+    top: 40px;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #e6e8e0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    width: 200px;
+}
+
+#noVNC_controls li { margin-bottom: 1em; }
+
+#noVNC_controls li:last-child { margin-bottom: 0; }
+
+/*** settings panel ***/
+#noVNC_settings {
+    position: absolute;
+    z-index: 10;
+    top: 40px;
+    right: 50px;
+    border: 1px solid #ccc;
+    background-color: #e6e8e0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    width: 200px;
+}
+
+#noVNC_settings li { margin-bottom: 1em; }
+
+#noVNC_settings li:last-child { margin-bottom: 0; }
+
+/*** VNC view ***/
+#noVNC_screen { text-align: center; }
+
+#noVNC_status_bar {
+    float: left;
+    width: 50%;
+}
+
+/*** buttons ***/
+.noVNC_status_button,
+.noVNC_status_button_selected {
+    display: inline-block;
+    *display: inline;
+    padding: 4px 10px 4px;
+    margin-bottom: 0;
+    *margin-left: .3em;
+    font-size: 13px;
+    line-height: 18px;
+    *line-height: 20px;
+    color: #333;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    *background-color: #e6e6e6;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image:    -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image:     -ms-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image:       -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image:          linear-gradient(top, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    border: 1px solid #ccc;
+    *border: 0;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-bottom-color: #b3b3b3;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
+    filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+    *zoom: 1;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+       -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.noVNC_status_button:hover,
+.noVNC_status_button_selected:hover {
+    color: #333;
+    text-decoration: none;
+    background-color: #e6e6e6;
+    *background-color: #d9d9d9;
+    background-position: 0 -15px;
+    -webkit-transition: background-position 0.1s linear;
+       -moz-transition: background-position 0.1s linear;
+        -ms-transition: background-position 0.1s linear;
+         -o-transition: background-position 0.1s linear;
+            transition: background-position 0.1s linear;
+}
+
+.noVNC_status_button:focus,
+.noVNC_status_button_selected:focus {
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.noVNC_status_button:active,
+.noVNC_status_button_selected:active {
+    background-color: #e6e6e6;
+    background-color: #d9d9d9 \9;
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+       -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.noVNC_status_button,
+.noVNC_status_button_selected {
+    border-color: #ccc;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.noVNC_status_button,
+.noVNC_status_button:hover,
+.noVNC_status_button_selected:hover {
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+..noVNC_status_button_selected:visited,
+.noVNC_status_button:visited { color: #fff; }
+
+.noVNC_status_button {
+    background-color: #414141;
+    *background-color: #222;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555), to(#222));
+    background-image: -webkit-linear-gradient(top, #555, #222);
+    background-image:    -moz-linear-gradient(top, #555, #222);
+    background-image:     -ms-linear-gradient(top, #555, #222);
+    background-image:      -o-linear-gradient(top, #555, #222);
+    background-image:         linear-gradient(top, #555, #222);
+    background-repeat: repeat-x;
+    border-color: #222 #222 #000;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#555555', endColorstr='#222222', GradientType=0);
+    filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.noVNC_status_button:hover,
+.noVNC_status_button:active,
+.noVNC_status_button.active,
+.noVNC_status_button.disabled,
+.noVNC_status_button[disabled] {
+    background-color: #222;
+    *background-color: #151515;
+}
+
+.noVNC_status_button:active,
+.noVNC_status_button.active { background-color: #080808 \9; }
+
+.noVNC_status_button_selected {
+    background-color: #0074cc;
+    *background-color: #05c;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0055cc));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0055cc);
+    background-image:    -moz-linear-gradient(top, #0088cc, #0055cc);
+    background-image:     -ms-linear-gradient(top, #0088cc, #0055cc);
+    background-image:      -o-linear-gradient(top, #0088cc, #0055cc);
+    background-image:         linear-gradient(top, #0088cc, #0055cc);
+    background-repeat: repeat-x;
+    border-color: #0055cc #0055cc #003580;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#0088cc', endColorstr='#0055cc', GradientType=0);
+    filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.noVNC_status_button_selected:hover,
+.noVNC_status_button_selected:active,
+.noVNC_status_button_selected.active,
+.noVNC_status_button_selected.disabled,
+.noVNC_status_button_selected[disabled] {
+    background-color: #0055cc;
+    *background-color: #004ab3;
+}
+
+.noVNC_status_button_selected:active,
+.noVNC_status_button_selected.active { background-color: #004099 \9; }
+
+#noVNC_clipboard_clear_button {
+    float: right;
+    margin-top: 1em;
+}
+
+#noVNC_connect_button { float: right; }
