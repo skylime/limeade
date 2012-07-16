@@ -10,9 +10,12 @@ from django.utils import simplejson
 from django.conf import settings
 from django.http import Http404
 
+from lxml.html import fromstring
 from urlparse import urlparse
 
 from limeade.cloud.models import Instance
+
+import libvirt
 
 
 @login_required
@@ -52,8 +55,8 @@ def instance_vnc_auth(request, slug, token):
     
     .. todo:: try to test within a unit test
     """
-    status_code = 200
-    vnc_port = 5900
+    status_code = 200 # default status code
+    vnc_port = '5900' # default port
     host = None
     
     try:
@@ -67,9 +70,23 @@ def instance_vnc_auth(request, slug, token):
     if i:
         host = urlparse(i.node.uri).netloc
     
+    try:
+        c = libvirt.open(i.node.uri)
+        dom = c.lookupByName(i.domain)
+        xml = dom.XMLDesc(0)
+    except:
+        # TODO: catch exception?
+        pass
+    
+    try:
+        vnc_port = fromstring(xml).xpath('../domain/devices/graphics[@type="vnc"]')[0].attrib['port']
+    except:
+        # TODO: catch exception?
+        pass
+    
     data = {
         'host': host,
-        'port': vnc_port
+        'port': int(vnc_port)
     }
     
     return HttpResponse(simplejson.dumps(data), mimetype='application/json', status=status_code)
