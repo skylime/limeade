@@ -64,26 +64,34 @@ Logging.init_logging();
 
 function handleProxy(ws, vncSocket) {
     vncSocket.on('begin', function() {
+        // New connection established
         Logging.Debug('Connected to target');
     });
     
     vncSocket.on('data', function(data) {
+        // Send data to the client
         ws.send(new Buffer(data).toString('base64'));
     });
     
     vncSocket.on('end', function() {
-        Logging.Warn('Target disconnected');
+        // End the websocket connection
+        ws.close();
+        Logging.Warn('VNC Target disconnected');
     });
     
     ws.on('message', function(msg) {
+        // Send data to VNC
         vncSocket.write(new Buffer(msg, 'base64').toString('binary'), 'binary');
     });
     
     ws.on('close', function(code, reason) {
+        // End the connection
+        vncSocket.end();
         Logging.Warn('WebSocket client disconnected: ' + code + ' [' + reason + ']');
     });
     
     ws.on('error', function(e) {
+        // In case of errors, print that out
         Logging.Error('WebSocket client error: ' + e);
     });
 }
