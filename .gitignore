@@ -13,3 +13,4 @@ local_settings.py
 htdocs/
 MuseoSans.font.js
 node_modules/
+*.odt#
