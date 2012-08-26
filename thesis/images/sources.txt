@@ -40,3 +40,15 @@ Screenshot von noVNC in Google Chrome
 Screenshot von Guacamole
   Urheber: Guacamole
   Quelle: http://sourceforge.net/projects/guacamole/screenshots/297467
+
+TightVNC mit Java Applet
+  Urheber: Andrey Savchenko
+  Quelle: http://www.rarst.net/images/RemoteaccesstoPCwithTightVNC_4C07/tightvnc_browser.png
+
+Funktionsweise von ThinVNC
+  Urheber: Cybele Software
+  Quelle: http://www.cybelesoft.com/thinvnc/img/ThinVNC_banner.png
+
+Screenshot von OnlineVNC
+  Urheber: OnlineVNC Solutions
+  Quelle: http://www.onlinevnc.com/images/onlinevnc_site_open.png
