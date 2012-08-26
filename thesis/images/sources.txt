@@ -19,8 +19,6 @@ Remote Framebuffer Protocol
   Urheber: AT&T
   Quelle: http://www.cl.cam.ac.uk/Research/DTG/attarchive/images/pictures/rfb.gif
 
-Brainstorming über die Zielgruppe
-
 Webportal zu Beginn der Arbeit
   Urheber: Sebastian Wiedenroth
   Quelle: http://sau.frubar.net/shots/37143.jpg
