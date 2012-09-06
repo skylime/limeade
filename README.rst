@@ -41,7 +41,7 @@ weitere Anforderungen:
 - libvirt_
 - RabbitMQ_
 
-.. _Celerey: http://celeryproject.org/
+.. _Celery: http://celeryproject.org/
 .. _django-celery: http://docs.celeryproject.org/en/latest/django/index.html
 .. _pyOpenSSL: http://packages.python.org/pyOpenSSL/
 .. _lxml: http://lxml.de/
@@ -62,7 +62,8 @@ Integrierte Anwendungen (Django):
 Installation der Anforderungen:
 -------------------------------
 
-Die Installation der Anforderungen wird beispielhaft für Arch Linux beschrieben.
+Die Installation der Anforderungen wird beispielhaft für **Arch Linux**
+beschrieben.
 
 **Celery und django-celery:**
 
