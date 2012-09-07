@@ -149,9 +149,9 @@ SYSTEM_USER_HOME      = "/srv/www/%s/"
 SYSTEM_USER_ID_OFFSET = 5000
 
 # celery
-BROKER_HOST = "v1.local"
+BROKER_HOST = "localhost"
 BROKER_PORT = 5672
-BROKER_USER = "limade"
+BROKER_USER = "limeade"
 BROKER_PASSWORD = "EimequuChuap8aa8ohyo"
 BROKER_VHOST = "limeade"
 

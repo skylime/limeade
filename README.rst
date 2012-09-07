@@ -134,6 +134,33 @@ Als letzter Schritt die QEMU Konfiguration in libvirt (*/etc/libvirt/qemu.conf*)
 Als nächstes kann mittels virt-manager eine VM angelegt werden. Die Daten der VM
 können im Django Admin später eingetragen werden.
 
+**RabbitMQ:**
+
+In den `Arch User Repositories`_ findet sich ein `Paket für RabbitMQ`_ welches 
+installiert werden muss.
+
+.. _Arch User Repositories: https://aur.archlinux.org/
+.. _Paket für RabbitMQ: http://aur.archlinux.org/packages.php?ID=19090
+
+Anschließend wird der RabbitMQ als root gestartet:
+
+::
+    
+    $ rabbitmq-server
+
+Läuft der Server, müssen folgende drei Schritte durchgeführt werden:
+
+::
+    
+    $ rabbitmqctl add_user limeade EimequuChuap8aa8ohyo
+    $ rabbitmqctl add_vhost limeade
+    $ rabbitmqctl set_permissions -p limeade limeade ".*" ".*" ".*"
+
+Der Server läuft nun und empfängt Nachrichten, leitet diese aber noch nicht 
+weiter. Dazu muss der Deamon limed mittels Celery gestartet werden. In der 
+*settings.py* müssen dazu noch die Angaben für MySQL gemacht werden, damit 
+völlig automatisch Datenbanken erstellt werden können.
+
 Benutzung:
 ----------
 
@@ -165,4 +192,11 @@ Der Node.js Proxy wird im proxy Verzeichnis ebenfalls ausgeführt:
 ::
     
     $ node index.js
+
+Zum Abschluss muss RabbitMQ und der Deamon im limed-Verzeichnis gestaret werden:
+
+::
+    
+    $ rabbitmq-server
+    $ celeryd
 
