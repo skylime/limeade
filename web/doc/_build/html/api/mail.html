@@ -1,0 +1,352 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mail &mdash; limeade 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="limeade 1.0 documentation" href="../index.html" />
+    <link rel="next" title="FTP" href="ftp.html" />
+    <link rel="prev" title="MySQL" href="mysql.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ftp.html" title="FTP"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mysql.html" title="MySQL"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">limeade 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mail">
+<h1>Mail<a class="headerlink" href="#mail" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-limeade.mail.models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#module-limeade.mail.models" title="Permalink to this headline">¶</a></h2>
+<p>Models for limeade mail</p>
+<dl class="class">
+<dt id="limeade.mail.models.Account">
+<em class="property">class </em><tt class="descclassname">limeade.mail.models.</tt><tt class="descname">Account</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.models.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new mail account</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; the name of the account</li>
+<li><strong>domain</strong> &#8211; the foreign key to the domain</li>
+<li><strong>password</strong> &#8211; the password of the account</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="limeade.mail.models.Account.set_password">
+<tt class="descname">set_password</tt><big>(</big><em>password</em><big>)</big><a class="headerlink" href="#limeade.mail.models.Account.set_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Salt and hashes the password.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="limeade.mail.models.Limitset">
+<em class="property">class </em><tt class="descclassname">limeade.mail.models.</tt><tt class="descname">Limitset</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.models.Limitset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a limitset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>product</strong> &#8211; the foreign key to the product</li>
+<li><strong>accounts</strong> &#8211; the maximum number of mail accounts</li>
+<li><strong>redirects</strong> &#8211; the maximum number of mail redirects</li>
+<li><strong>mailspace</strong> &#8211; the maximum number of space</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="limeade.mail.models.Limitset.utilization">
+<em class="property">static </em><tt class="descname">utilization</tt><big>(</big><em>user</em>, <em>ressource</em><big>)</big><a class="headerlink" href="#limeade.mail.models.Limitset.utilization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the correct ressource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="limeade.mail.models.Redirect">
+<em class="property">class </em><tt class="descclassname">limeade.mail.models.</tt><tt class="descname">Redirect</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.models.Redirect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new mail redirect</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; the name of the redirect</li>
+<li><strong>domain</strong> &#8211; the foreign key to the domain</li>
+<li><strong>to</strong> &#8211; redirect to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-limeade.mail.views">
+<span id="views"></span><h2>Views<a class="headerlink" href="#module-limeade.mail.views" title="Permalink to this headline">¶</a></h2>
+<p>Views for limeade mail</p>
+<dl class="function">
+<dt id="limeade.mail.views.account_add">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">account_add</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.account_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new mail account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; the request object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an edit form template</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.account_delete">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">account_delete</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.account_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a mail account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; the request object</li>
+<li><strong>slug</strong> &#8211; the id of the account</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">redirects to mail account list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.account_edit">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">account_edit</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.account_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a new password for an email account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; the request object</li>
+<li><strong>slug</strong> &#8211; the id of the account</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an edit form template</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.account_list">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">account_list</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.account_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all mail accounts of a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; the request object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of mail accounts</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.redirect_add">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">redirect_add</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.redirect_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new mail redirect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; the request object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an edit form template</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.redirect_delete">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">redirect_delete</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.redirect_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a mail redirect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; the request object</li>
+<li><strong>slug</strong> &#8211; the id of the redirect</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">redirects to a list of mail redirects</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.redirect_edit">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">redirect_edit</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.redirect_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit a mail redirect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; the request object</li>
+<li><strong>slug</strong> &#8211; the id of the redirect</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an edit form template</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="limeade.mail.views.redirect_list">
+<tt class="descclassname">limeade.mail.views.</tt><tt class="descname">redirect_list</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#limeade.mail.views.redirect_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all mail redirects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; the request object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of mail redirects</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Mail</a><ul>
+<li><a class="reference internal" href="#module-limeade.mail.models">Models</a></li>
+<li><a class="reference internal" href="#module-limeade.mail.views">Views</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mysql.html"
+                        title="previous chapter">MySQL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ftp.html"
+                        title="next chapter">FTP</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/mail.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ftp.html" title="FTP"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mysql.html" title="MySQL"
+             >previous</a> |</li>
+        <li><a href="../index.html">limeade 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Marc Rochow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

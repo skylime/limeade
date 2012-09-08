@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; limeade 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="limeade 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Benutzung" href="using.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="using.html" title="Benutzung"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">limeade 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Der Source Code kann von Github geladen werden. Entweder per direkten Download
+oder über Git.</p>
+<div class="code bash highlight-python"><pre>git clone git@github.com:fatality/limeade.git</pre>
+</div>
+<div class="section" id="installation-der-anforderungen">
+<h2>Installation der Anforderungen<a class="headerlink" href="#installation-der-anforderungen" title="Permalink to this headline">¶</a></h2>
+<p>Die Installation der Anforderungen wird beispielhaft für <strong>Arch Linux</strong>
+beschrieben.</p>
+<p><strong>Celery und django-celery:</strong></p>
+<div class="code bash highlight-python"><pre>pip2 install -U Celery
+pip2 install -U django-celery</pre>
+</div>
+<p><strong>pyOpenSSL:</strong></p>
+<div class="code bash highlight-python"><pre>pacman -S python2-pyopenssl</pre>
+</div>
+<p><strong>lxml:</strong></p>
+<div class="code bash highlight-python"><pre>pacman -S python2-lxml</pre>
+</div>
+<p><strong>Ipy:</strong></p>
+<div class="code bash highlight-python"><pre>pacman -S python2-ipy</pre>
+</div>
+<p><strong>libvirt:</strong></p>
+<p>Um libvirt und somit auch KVM benutzen zu können, muss der Computer
+Virtualisierung unterstützen. Dies lässt sich mit folgendem Befehl testen:</p>
+<div class="code bash highlight-python"><pre>grep -E "(vmx|svm)" --color=always /proc/cpuinfo</pre>
+</div>
+<p>Wenn die Ausgabe korrekt ist und der Computer Virtualisierung unterstützt kann
+libvirt, KVM und QEMU installiert und eingerichtet werden.</p>
+<div class="code bash highlight-python"><pre>pacman -S qemu-kvm libvirt dnsmasq virt-manager</pre>
+</div>
+<p>Um dnsmasq korrekt einzurichten empfiehlt sich folgende diese <a class="reference external" href="https://wiki.archlinux.org/index.php/Dnsmasq">Anleitung</a>.
+Libvirt als Normaluser verwenden zu können ist in dieser <a class="reference external" href="https://wiki.archlinux.org/index.php/Libvirt#Configuration">Anleitung</a>
+beschrieben.</p>
+<p><strong>libvirt und TCP:</strong></p>
+<p>Die Datei <em>/etc/libvirt/libvirtd.conf</em> öffnen und folgende Stellen ändern:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">listen_tls</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">listen_tcp</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">auth_tcp</span><span class="o">=</span><span class="n">none</span>
+</pre></div>
+</div>
+<p>Die Deamon Datei <em>/etc/conf.d/libvirtd</em> öffnen und den Eintrag
+<em>LIBVIRTD_ARGS</em> in <em>LIBVIRTD_ARGS=&#8221;&#8211;listen&#8221;</em> ändern.</p>
+<p>Als letzter Schritt die QEMU Konfiguration in libvirt (<em>/etc/libvirt/qemu.conf</em>)
+öffnen und <em>vnc_listen = &#8220;0.0.0.0&#8221;</em> eintragen bzw. den Kommentar entfernen.</p>
+<p>Als nächstes kann mittels virt-manager eine VM angelegt werden. Die Daten der VM
+können im Django Admin später eingetragen werden.</p>
+<p><strong>RabbitMQ:</strong></p>
+<p>In den <a class="reference external" href="https://aur.archlinux.org/">Arch User Repositories</a> findet sich ein <a class="reference external" href="http://aur.archlinux.org/packages.php?ID=19090">Paket für RabbitMQ</a> welches
+installiert werden muss.</p>
+<p>Anschließend wird der RabbitMQ als root gestartet:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">rabbitmq</span><span class="o">-</span><span class="n">server</span>
+</pre></div>
+</div>
+<p>Läuft der Server, müssen folgende drei Schritte durchgeführt werden:</p>
+<div class="code bash highlight-python"><pre>rabbitmqctl add_user limeade EimequuChuap8aa8ohyo
+rabbitmqctl add_vhost limeade
+rabbitmqctl set_permissions -p limeade limeade ".*" ".*" ".*"</pre>
+</div>
+<p>Der Server läuft nun und empfängt Nachrichten, leitet diese aber noch nicht
+weiter. Dazu muss der Deamon limed mittels Celery gestartet werden. In der
+<em>settings.py</em> müssen dazu noch die Angaben für MySQL gemacht werden, damit
+völlig automatisch Datenbanken erstellt werden können.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installation-der-anforderungen">Installation der Anforderungen</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="previous chapter">Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="using.html"
+                        title="next chapter">Benutzung</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/getting-started/install.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="using.html" title="Benutzung"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             >previous</a> |</li>
+        <li><a href="../index.html">limeade 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Marc Rochow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

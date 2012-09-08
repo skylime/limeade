@@ -3,25 +3,41 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to limeade's documentation!
-===================================
+=====================
+limeade Dokumentation
+=====================
 
-Contents:
+Willkommen zur Version |version| der limeade Dokumentation.
+
+Einführung
+----------
 
 .. toctree::
-   :maxdepth: 2
+   
+   getting-started/overview
+   getting-started/requirements
+   getting-started/install
+   getting-started/using
 
-.. automodule:: limeade.cloud.views.vnc
-   :members:
+API Dokumentation
+-----------------
 
-.. automodule:: limeade.system.models
-   :members:
+.. toctree::
+   
+   api/system
+   api/web
+   api/mysql
+   api/mail
+   api/ftp
+   api/cluster
+   api/cloud
 
+Index und Tabellen
+------------------
 
-Indices and tables
-==================
+Benötigten Informationen nicht gefunden? Versuche es im Index oder probiere die
+Suchfunktion:
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+- :ref:`genindex`
+- :ref:`search`
 

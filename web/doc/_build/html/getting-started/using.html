@@ -1,0 +1,159 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Benutzung &mdash; limeade 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="limeade 1.0 documentation" href="../index.html" />
+    <link rel="next" title="App: System" href="../api/system.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api/system.html" title="App: System"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">limeade 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="benutzung">
+<h1>Benutzung<a class="headerlink" href="#benutzung" title="Permalink to this headline">¶</a></h1>
+<p>Sollten Node.js, Python, Django und die anderen Abhängigkeiten installiert sein
+lässt sich die Webanwendung mit Django einrichten. Dazu sollte jedoch eine
+lokale Konfigurationsdatei erstellt werden. Eine Beispieldatei ist integriert
+(local_settings.py.example).</p>
+<div class="section" id="django">
+<h2>Django<a class="headerlink" href="#django" title="Permalink to this headline">¶</a></h2>
+<p>Minimal sollte eine Datenbank angelegt werden und folgender Schritt durchgeführt
+werden:</p>
+<div class="code bash highlight-python"><pre>cd web/limeade
+python2 manage.py syncdb --migrate</pre>
+</div>
+<p>Dies erstellt alle Tabellen in der Datenbank und zugleich auch einen Benutzer
+mit vollen Adminrechten. Starten lässt sich die Anwendung anschließend lokal mit</p>
+<div class="code bash highlight-python"><pre>python2 manage.py runserver</pre>
+</div>
+<p>Die Webanwendung läuft nun unter <a class="reference external" href="http://127.0.0.1:8000/system/">http://127.0.0.1:8000/system/</a> und kann im Admin
+mit Daten gefüttert werden (<a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a>).</p>
+</div>
+<div class="section" id="node-js-proxy">
+<h2>Node.js Proxy<a class="headerlink" href="#node-js-proxy" title="Permalink to this headline">¶</a></h2>
+<p>Der Node.js Proxy wird im <em>proxy</em>-Verzeichnis ebenfalls ausgeführt:</p>
+<div class="code bash highlight-python"><pre>node index.js</pre>
+</div>
+</div>
+<div class="section" id="rabbitmq-und-celery">
+<h2>RabbitMQ und Celery<a class="headerlink" href="#rabbitmq-und-celery" title="Permalink to this headline">¶</a></h2>
+<p>Zum Abschluss muss RabbitMQ und der Deamon im <em>limed</em>-Verzeichnis gestaret werden:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">rabbitmq</span><span class="o">-</span><span class="n">server</span>
+<span class="n">celeryd</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Benutzung</a><ul>
+<li><a class="reference internal" href="#django">Django</a></li>
+<li><a class="reference internal" href="#node-js-proxy">Node.js Proxy</a></li>
+<li><a class="reference internal" href="#rabbitmq-und-celery">RabbitMQ und Celery</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api/system.html"
+                        title="next chapter">App: System</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/getting-started/using.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api/system.html" title="App: System"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             >previous</a> |</li>
+        <li><a href="../index.html">limeade 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Marc Rochow.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
