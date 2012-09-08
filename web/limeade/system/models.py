@@ -25,7 +25,6 @@ class Person(models.Model):
         >>> person
         <Person: Test User (Test Company)>
     
-    .. todo:: Add more relevant user information.
     """
     user      = models.OneToOneField(User, primary_key=True, verbose_name=_('User'))
     company   = models.CharField(max_length=default_length, blank=True, verbose_name=_('Company'))

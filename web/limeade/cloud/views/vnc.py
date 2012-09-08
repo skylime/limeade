@@ -52,8 +52,6 @@ def instance_vnc_auth(request, slug, token):
     :returns: dictionary containing proxy settings
     
     :raises: ObjectDoesNotExist
-    
-    .. todo:: try to test within a unit test
     """
     status_code = 200 # default status code
     vnc_port = '5900' # default port
