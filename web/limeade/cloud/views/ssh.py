@@ -10,12 +10,24 @@ from limeade.cloud.models import SSHKey
 
 @login_required
 def sshkey_list(request):
+    """Show a list of the Users SSH Keys.
+    
+    :param request: the request object
+    
+    :returns: a list of ssh keys
+    """
     return object_list(request, SSHKey.objects.filter(owner=request.user), 
         template_name='limeade_cloud/sshkey_list.html')
 
 
 @login_required
 def sshkey_add(request):
+    """Form to add a new SSH Key.
+    
+    :param request: the request object
+    
+    :returns: an edit form template
+    """
     form = SSHKeyForm(request.POST or None)
     
     if form.is_valid():
@@ -30,6 +42,13 @@ def sshkey_add(request):
 
 @login_required
 def sshkey_delete(request, slug):
+    """Delete a SSH Key.
+    
+    :param request: the request object
+    :param slug: the id of the ssh key
+    
+    :returns: redirect to a list of ssh keys
+    """
     key = get_object_or_404(SSHKey, pk=slug)
     if key.owner == request.user:
         key.delete()
