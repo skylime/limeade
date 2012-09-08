@@ -5,10 +5,12 @@ Requirements
 - Python_ == 2.7
 - Django_ >= 1.3
 - Node.js_ >= 0.6
+- MySQL_ >= 5.0
 
 .. _Python: http://www.python.org/
 .. _Django: http://www.djangoproject.com/
 .. _Node.js: http://www.nodejs.org
+.. _MySQL: http://www.mysql.com/
 
 weitere Anforderungen
 ---------------------

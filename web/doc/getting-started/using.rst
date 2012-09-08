@@ -2,10 +2,10 @@
 Benutzung
 =========
 
-Sollten Node.js, Python, Django und die anderen Abhängigkeiten installiert sein 
-lässt sich die Webanwendung mit Django einrichten. Dazu sollte jedoch eine 
-lokale Konfigurationsdatei erstellt werden. Eine Beispieldatei ist integriert 
-(local_settings.py.example).
+Sollten Node.js, Python, MySQL, Django und die anderen Abhängigkeiten 
+installiert sein lässt sich die Webanwendung mit Django einrichten. Dazu sollte 
+jedoch eine lokale Konfigurationsdatei erstellt werden. Eine Beispieldatei ist 
+integriert (local_settings.py.example).
 
 Django
 ------
