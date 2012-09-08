@@ -1,3 +1,4 @@
+"""Views for limeade system"""
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.views.generic.create_update import update_object
@@ -31,6 +32,10 @@ from .utils import get_limitsets
 
 @login_required
 def ressources(request):
+    """
+    Display the aggregated ressources available to the current user.
+    This depends on the products a user has subscribed to.
+    """
     limits = {}
     for limitset in get_limitsets():
         prefix = 'product__' + limitset.get_accessor_name()
@@ -56,6 +61,7 @@ def ressources(request):
 
 @login_required
 def account(request):
+    """Display basic account information."""
     return render_to_response(
         'limeade_system/account.html',
         {'person': request.user.get_profile()},
@@ -65,11 +71,13 @@ def account(request):
 
 @permission_required('system.reseller')
 def customer_list(request):
+    """Show a list of customers."""
     return object_list(request, Person.objects.filter(parent=request.user), template_name='limeade_system/customer_list.html')
 
 
 @permission_required('system.reseller')
 def customer_add(request):
+    """Form to add a new customer."""
     # TODO: check username is uniqe
     form = PersonAddForm(request.POST or None)
     if form.is_valid():
@@ -99,6 +107,7 @@ def customer_add(request):
 
 @permission_required('system.reseller')
 def customer_view(request, slug):
+    """View details of a customer."""
     u = get_object_or_404(User, username = slug)
     c = Contract.objects.filter(person=u.person)
     return object_detail(
@@ -115,6 +124,7 @@ def customer_view(request, slug):
 
 @permission_required('system.reseller')
 def customer_edit(request, slug):
+    """Edit details of a customer."""
     # TODO: check username is uniqe
     # TODO: permissions, permissions permissions!
     u = get_object_or_404(User, username = slug)
@@ -146,6 +156,7 @@ def customer_edit(request, slug):
 
 @permission_required('system.reseller')
 def customer_delete(request, slug):
+    """Remove a customer."""
     # TODO: permission checking
     get_object_or_404(Person, user__username = slug).delete()
     return redirect('limeade_system_customer_list')
@@ -153,6 +164,10 @@ def customer_delete(request, slug):
 
 @permission_required('system.reseller')
 def customer_manage(request, slug):
+    """
+    Switch the current user to the customer.
+    This allowes one to interact with the interface as if one was logged into the customers account.
+    """
     new_user = get_object_or_404(User, username = slug)
     # TODO: permission checking
     original_user = request.user.username
@@ -164,6 +179,7 @@ def customer_manage(request, slug):
 
 @login_required
 def customer_manage_return(request):
+    """Return to the original user."""
     original_user = User.objects.filter(username=request.session['limeade_original_user'])[0]
     original_user.backend = 'django.contrib.auth.backends.ModelBackend' 
     login(request, original_user)
@@ -172,6 +188,7 @@ def customer_manage_return(request):
 
 @permission_required('system.reseller')
 def contract_add(request, slug):
+    """Add a new contract for a customer."""
     u = get_object_or_404(User, username = slug)
     form = ContractForm(request.POST or None)
     form.fields['product'].queryset = Product.objects.filter(owner=request.user)
@@ -186,6 +203,7 @@ def contract_add(request, slug):
 
 @permission_required('system.reseller')
 def contract_customize(request, slug, contract_id):
+    """Personalize a plan for a customer."""
     u = get_object_or_404(User, username = slug)
     c = get_object_or_404(Contract, pk = contract_id)
     p = c.product
@@ -218,6 +236,7 @@ def contract_customize(request, slug, contract_id):
 
 @permission_required('system.reseller')
 def contract_delete(request, slug, contract_id):
+    """Remove a contract."""
     c = get_object_or_404(Contract, pk = contract_id)
     if c.person.get_profile().parent != request.user:
         return redirect_to_login(reverse(contract_delete))
@@ -226,6 +245,7 @@ def contract_delete(request, slug, contract_id):
 
 
 def domain_add(request, slug, contract_id):
+    """Add a new domain."""
     u = get_object_or_404(User, username = slug)
     c = get_object_or_404(Contract, pk = contract_id)
     form = DomainForm(request.POST or None)
@@ -239,6 +259,7 @@ def domain_add(request, slug, contract_id):
 
 
 def domain_delete(request, slug, contract_id, domain_id):
+    """Remove a domain."""
     # TODO: permission checks
     get_object_or_404(Domain, pk = domain_id).delete()
     # TODO: cleanup related objects
@@ -247,11 +268,16 @@ def domain_delete(request, slug, contract_id, domain_id):
 
 @permission_required('system.reseller')
 def product_list(request):
+    """Show a list of products."""
     return object_list(request, Product.objects.filter(owner=request.user), template_name='limeade_system/product_list.html')
 
 
 @permission_required('system.reseller')
 def product_add(request):
+    """
+    Create a new product.
+    A product is a combination of different limitsets.
+    """
     form = ProductForm(request.POST or None)
     p = None
     if form.is_valid():
@@ -276,6 +302,7 @@ def product_add(request):
 
 @permission_required('system.reseller')
 def product_edit(request, slug, next='limeade_system_product_list'):
+    """Edit a product."""
     p = Product.objects.get(pk=slug)
     form = ProductForm(request.POST or None, instance=p)
     
@@ -297,6 +324,7 @@ def product_edit(request, slug, next='limeade_system_product_list'):
 
 @permission_required('system.reseller')
 def product_delete(request, slug):
+    """Remove a product."""
     get_object_or_404(Product, pk = slug).delete()
     return redirect('limeade_system_product_list')
 
