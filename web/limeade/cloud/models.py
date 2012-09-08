@@ -93,14 +93,6 @@ class Limitset(models.Model):
     :param cpu_cores: max number of cpu cores
     :param memory: max number of memory
     :param storage: max number of storage
-    
-    :Example:
-    
-        >>> from limeade.system.models import Person
-        >>> person = Person.objects.get(pk=1)
-        >>> person
-        <Person: Test User (Test Company)>
-    
     """
     product = models.ForeignKey(Product, unique=True, related_name='limitset_cloud')
     cpu_cores = models.IntegerField("Cores")
