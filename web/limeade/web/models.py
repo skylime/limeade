@@ -31,16 +31,16 @@ class VHost(models.Model):
         <Person: Test VHost.testdomain.de>
     
     """
-	name     = models.CharField(max_length=default_length)
-	domain   = models.ForeignKey(Domain, blank=False)
-	style    = models.CharField(max_length=8, choices=VHOST_STYLES)
-	cert     = models.ForeignKey('SSLCert', blank=True, null=True, on_delete=models.SET_NULL, verbose_name='SSL Certificate')
-	
-	unique_together = (("name", "domain"),)
-	
-	def __unicode__(self):
-	    """Unicode representation for the vhost."""
-		return unicode(self.name) + '.' + unicode(self.domain)
+    name     = models.CharField(max_length=default_length)
+    domain   = models.ForeignKey(Domain, blank=False)
+    style    = models.CharField(max_length=8, choices=VHOST_STYLES)
+    cert     = models.ForeignKey('SSLCert', blank=True, null=True, on_delete=models.SET_NULL, verbose_name='SSL Certificate')
+    
+    unique_together = (("name", "domain"),)
+    
+    def __unicode__(self):
+        """Unicode representation for the vhost."""
+        return unicode(self.name) + '.' + unicode(self.domain)
 
 
 class DefaultVHost(models.Model):
@@ -49,8 +49,8 @@ class DefaultVHost(models.Model):
     :param doamin: the foreign key to the domain
     :param vhost: the foreign key to the vhost
     """
-	domain = models.OneToOneField(Domain, primary_key=True)
-	vhost  = models.ForeignKey(VHost, blank=False)
+    domain = models.OneToOneField(Domain, primary_key=True)
+    vhost  = models.ForeignKey(VHost, blank=False)
 
 
 class PoolIP(models.Model):
@@ -67,12 +67,12 @@ class PoolIP(models.Model):
         <Person: 127.0.0.1>
     
     """
-	ip     = models.IPAddressField(unique=True, blank=False)
-	region = models.ForeignKey(Region, blank=False)
-	
-	def __unicode__(self):
-	    """Unicode representation for the ip."""
-		return unicode(self.ip)
+    ip     = models.IPAddressField(unique=True, blank=False)
+    region = models.ForeignKey(Region, blank=False)
+    
+    def __unicode__(self):
+        """Unicode representation for the ip."""
+        return unicode(self.ip)
 
 class SSLCert(models.Model):
     """Creates SSL Certifications
@@ -89,36 +89,36 @@ class SSLCert(models.Model):
     :param ca: the ca of the cert
     :param ip: the foreign key to the ip
     """
-	owner            = models.ForeignKey(User)
-	serial           = models.CharField(max_length=default_length)
-	valid_not_before = models.DateTimeField()
-	valid_not_after  = models.DateTimeField()
-	subject          = models.CharField(max_length=default_length)
-	cn               = models.CharField(max_length=default_length)
-	issuer           = models.CharField(max_length=default_length)
-	cert             = models.TextField()
-	key              = models.TextField()
-	ca               = models.TextField()
-	ip               = models.ForeignKey(PoolIP, unique=True, blank=False)
-	
-	def set_cert(self, cert, key, ca):
-	    """Saves the certification."""
-		self.cert = cert
-		self.key  = key
-		self.ca   = ca
-		
-		cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
-			
-		self.subject = x509name_to_str(cert.get_subject())
-		self.issuer  = x509name_to_str(cert.get_issuer())
-		self.cn      = cert.get_subject().commonName
-		self.serial  = cert.get_serial_number()
-		self.valid_not_before = parseAsn1Generalizedtime(cert.get_notBefore())
-		self.valid_not_after  = parseAsn1Generalizedtime(cert.get_notAfter())
-			
-	def __unicode__(self):
-	    """Unicode representation for the cert."""
-		return self.cn + ' (' + self.serial + ')'
+    owner            = models.ForeignKey(User)
+    serial           = models.CharField(max_length=default_length)
+    valid_not_before = models.DateTimeField()
+    valid_not_after  = models.DateTimeField()
+    subject          = models.CharField(max_length=default_length)
+    cn               = models.CharField(max_length=default_length)
+    issuer           = models.CharField(max_length=default_length)
+    cert             = models.TextField()
+    key              = models.TextField()
+    ca               = models.TextField()
+    ip               = models.ForeignKey(PoolIP, unique=True, blank=False)
+    
+    def set_cert(self, cert, key, ca):
+        """Saves the certification."""
+        self.cert = cert
+        self.key  = key
+        self.ca   = ca
+        
+        cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
+            
+        self.subject = x509name_to_str(cert.get_subject())
+        self.issuer  = x509name_to_str(cert.get_issuer())
+        self.cn      = cert.get_subject().commonName
+        self.serial  = cert.get_serial_number()
+        self.valid_not_before = parseAsn1Generalizedtime(cert.get_notBefore())
+        self.valid_not_after  = parseAsn1Generalizedtime(cert.get_notAfter())
+            
+    def __unicode__(self):
+        """Unicode representation for the cert."""
+        return self.cn + ' (' + self.serial + ')'
 
 class HTTPRedirect(models.Model):
     """Creates http redirects
@@ -127,17 +127,17 @@ class HTTPRedirect(models.Model):
     :param doamin: the associated domain
     :param to: the redirect to
     """
-	name   = models.CharField(max_length=default_length)
-	domain = models.ForeignKey(Domain)
-	to     = models.CharField(max_length=default_length)
-	
-	class Meta:
-		unique_together = ('name', 'domain')
-		
-	def __unicode__(self):
-	    """Unicode representation for the redirect."""
-		return self.name + '.' + unicode(self.domain) + ' -> ' + self.to
-		
+    name   = models.CharField(max_length=default_length)
+    domain = models.ForeignKey(Domain)
+    to     = models.CharField(max_length=default_length)
+    
+    class Meta:
+        unique_together = ('name', 'domain')
+        
+    def __unicode__(self):
+        """Unicode representation for the redirect."""
+        return self.name + '.' + unicode(self.domain) + ' -> ' + self.to
+        
 class Limitset(models.Model):
     """Maximum limit available.
     
@@ -147,28 +147,28 @@ class Limitset(models.Model):
     :param webspace: maximum webspace
     :param cputime: maximum cputime
     """
-	product = models.ForeignKey(Product, unique=True, related_name='limitset_web')
-	vhosts    = models.IntegerField("VHosts")
-	redirects = models.IntegerField("Redirects")
-	webspace  = models.IntegerField("Storage", help_text="MB")
-	cputime   = models.IntegerField("CPU Time")
+    product = models.ForeignKey(Product, unique=True, related_name='limitset_web')
+    vhosts    = models.IntegerField("VHosts")
+    redirects = models.IntegerField("Redirects")
+    webspace  = models.IntegerField("Storage", help_text="MB")
+    cputime   = models.IntegerField("CPU Time")
 
-	is_limitset = True
-	@staticmethod
-	def utilization(user, ressource):
-	    """Filters specific ressources."""
-		domains = get_domains(user)
-		if ressource == 'accounts':
-			return VHost.objects.filter(domain__in=list(domains)).count()
-		if ressource == 'redirects':
-			return HTTPRedirect.objects.filter(domain__in=list(domains)).count()
-		return None
-		
-	class Meta:
-		verbose_name = 'Web'
+    is_limitset = True
+    @staticmethod
+    def utilization(user, ressource):
+        """Filters specific ressources."""
+        domains = get_domains(user)
+        if ressource == 'accounts':
+            return VHost.objects.filter(domain__in=list(domains)).count()
+        if ressource == 'redirects':
+            return HTTPRedirect.objects.filter(domain__in=list(domains)).count()
+        return None
+        
+    class Meta:
+        verbose_name = 'Web'
 
 
 def get_vhosts(user):
     """Returns all vhosts that belongs to one user."""
-	return VHost.objects.filter(domain__in=list(get_domains(user)))
+    return VHost.objects.filter(domain__in=list(get_domains(user)))
 
