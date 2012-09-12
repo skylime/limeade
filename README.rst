@@ -1,10 +1,16 @@
-HS Augsburg: Bachelorarbeit
-===========================
+========================================================================
+Einsatz von WebSockets zur Echtzeit-Administration eines Hosting-Clusters
+=========================================================================
 
-von Marc Rochow
+Bachelorarbeit
+==============
+
+von Marc Rochow 
+an der Hochschule Augsburg 
+in Kooperation mit SkyLime GbR
 
 Diese Bacheloarbeit stellt ein voll funktionstüchtiges Admininterface für 
-Webhosting dar.
+Webhosting Firmen dar.
 
 Einige Features:
 ----------------
