@@ -1,0 +1,7 @@
+django
+django-celery
+pyOpenSSL
+lxml
+IPy
+South
+django-uni-form
