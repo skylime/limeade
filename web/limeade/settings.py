@@ -7,34 +7,34 @@ gettext_noop = lambda s: s
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 # DEBUG
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # ADMINS
 ADMINS = (
-    (u'administrator', 'admin@qwe123.de'),
+	(u'administrator', 'admin@qwe123.de'),
 )
 MANAGERS = ADMINS
 EDITORAL_STAFF = MANAGERS + ()
 
 # DATABASE
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': SITE_ROOT + '/sqlite.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.sqlite3',
+		'NAME': SITE_ROOT + '/sqlite.db',
+		'USER': '',
+		'PASSWORD': '',
+		'HOST': '',
+		'PORT': '',
+	}
 }
 
 # LOCATION
 TIME_ZONE = 'Europe/Berlin'
 LANGUAGE_CODE = 'de'
 LANGUAGES = (
-    ('de', gettext_noop('German')),
-    ('en', gettext_noop('English')),
+	('de', gettext_noop('German')),
+	('en', gettext_noop('English')),
 )
 
 SITE_ID = 1
@@ -59,9 +59,9 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+	'django.contrib.staticfiles.finders.FileSystemFinder',
+	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+	#'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
@@ -69,58 +69,58 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 SECRET_KEY = 'po&5*yv$)lpnv9pwhcq!%s(up#le!_!y-1!$1)-oi60pe@o2mwdummydummy-dev-only'
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
+	'django.template.loaders.filesystem.Loader',
+	'django.template.loaders.app_directories.Loader',
+	#'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'limeade.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates'),
+	os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates'),
 )
 
 INSTALLED_APPS = (
-    #Django,
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
+	#Django,
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.sites',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'django.contrib.admin',
+	'django.contrib.admindocs',
 
-    #Third-Party
-    'uni_form',
-    'djcelery',
-    'south',
+	#Third-Party
+	'uni_form',
+	'djcelery',
+	'south',
 
-    #limeade,
-    'limeade.system',
-    'limeade.web',
-    'limeade.mail',
-    'limeade.cloud',
-    'limeade.mysql',
-    'limeade.ftp',
-    'limeade.cluster',
+	#limeade,
+	'limeade.system',
+	'limeade.web',
+	'limeade.mail',
+	'limeade.cloud',
+	'limeade.mysql',
+	'limeade.ftp',
+	'limeade.cluster',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages",
+	"django.contrib.auth.context_processors.auth",
+	"django.core.context_processors.debug",
+	"django.core.context_processors.i18n",
+	"django.core.context_processors.media",
+	"django.core.context_processors.request",
+	"django.contrib.messages.context_processors.messages",
 )
 
 AUTH_PROFILE_MODULE = "system.Person"
@@ -132,9 +132,9 @@ SITE_API_KEY = 'Ab1Tae1Iegh5iechahvi'
 # puppet class names
 MAIL_POSTBOX_SERVICE_NAME = 'mail_postbox'
 WEB_VHOST_STYLE_MAP = (
-    ('static', 'web_static'),
-    ('php',    'web_php'),
-    ('wsgi',   'web_wsgi'),
+	('static', 'web_static'),
+	('php',    'web_php'),
+	('wsgi',   'web_wsgi'),
 )
 
 SYSTEM_USER_NAME      = "u%s"
@@ -158,10 +158,10 @@ NODE_HOST = "127.0.0.1"
 NODE_PORT = 8080
 
 try:
-    from local_settings import * 
+	from local_settings import * 
 except ImportError: 
-    try:
-        from limeade.local_settings import *
-    except ImportError:
-        pass
+	try:
+		from limeade.local_settings import *
+	except ImportError:
+		pass
 
