@@ -1,3 +1,0 @@
-rabbitmqctl add_user limeade EimequuChuap8aa8ohyo
-rabbitmqctl add_vhost limeade
-rabbitmqctl set_permissions -p limeade limeade ".*" ".*" ".*"
