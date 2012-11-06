@@ -1,24 +1,23 @@
 import os.path
 import djcelery
 
-
 djcelery.setup_loader()
-
 gettext_noop = lambda s: s
-
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
+# DEBUG
+DEBUG = False
+TEMPLATE_DEBUG = DEBUG
+
+# ADMINS
 ADMINS = (
-    (u'Marc Rochow', 'marc.rochow@hs-augsburg.de'),
+    (u'administrator', 'admin@qwe123.de'),
 )
-
 MANAGERS = ADMINS
-
 EDITORAL_STAFF = MANAGERS + ()
 
+# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -30,10 +29,9 @@ DATABASES = {
     }
 }
 
+# LOCATION
 TIME_ZONE = 'Europe/Berlin'
-
 LANGUAGE_CODE = 'de'
-
 LANGUAGES = (
     ('de', gettext_noop('German')),
     ('en', gettext_noop('English')),
@@ -42,27 +40,22 @@ LANGUAGES = (
 SITE_ID = 1
 
 USE_I18N = True
-
 USE_L10N = True
 
 USE_THOUSAND_SEPARATOR = False
 
 LOCALE_PATHS = (
-    os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'locale'),
+	SITE_ROOT + '/locale/'
 )
 
-MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'htdocs', 'media')
-
+MEDIA_ROOT = SITE_ROOT + '/../media/'
 LIB_MEDIA_ROOT = MEDIA_ROOT
-
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'htdocs', 'static')
-
+STATIC_ROOT = SITE_ROOT + '/../static/'
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (
-    os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static'),
+	SITE_ROOT + '/../static/'
 )
 
 STATICFILES_FINDERS = (
@@ -105,12 +98,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    
+
     #Third-Party
     'uni_form',
     'djcelery',
     'south',
-    
+
     #limeade,
     'limeade.system',
     'limeade.web',
