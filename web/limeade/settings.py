@@ -21,7 +21,7 @@ EDITORAL_STAFF = MANAGERS + ()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': SITE_PATH + '/sqlite.db',
+        'NAME': SITE_ROOT + '/sqlite.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
