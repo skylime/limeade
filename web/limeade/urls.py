@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.views.generic.simple import redirect_to
 from django.conf import settings
 
 
@@ -20,6 +21,7 @@ urlpatterns += patterns('',
 	url(r'^mysql/',   include('limeade.mysql.urls')),
 	url(r'^ftp/',     include('limeade.ftp.urls')),
 	url(r'^cluster/', include('limeade.cluster.urls')),
+	(r'^$', redirect_to, {'url': '/system/'}),
 )
 
 # Account administer
