@@ -1,6 +1,6 @@
 """Models for limeade cluster"""
 from django.db import models
-
+from macaddress.fields import *
 
 default_length = 250
 
@@ -39,7 +39,8 @@ class Server(models.Model):
     :param enabled: indicates if this server is enabled
     """
     hostname = models.CharField(max_length=default_length, unique=True)
-    ip       = models.CharField(max_length=default_length, unique=True)
+    ip       = models.GenericIPAddressField(unique=True)
+    mac      = MACAddressField(unique=True)
     region   = models.ForeignKey(Region)
     services = models.ManyToManyField(Service)
     enabled  = models.BooleanField(default=False)
