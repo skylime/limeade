@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 
 from ..system.models import Product
+from ..cluster.models import Region
 
 
 default_length = 250
@@ -15,6 +16,7 @@ class Node(models.Model):
     :param uri: the unique resource identifier of the node
     """
     name     = models.CharField(max_length=default_length)
+    region   = models.ForeignKey(Region)
     uri      = models.CharField(max_length=default_length)
     
     def __unicode__(self):
@@ -34,6 +36,7 @@ class Instance(models.Model):
     :param mac_addr: the mac address of the instance
     """
     hostname = models.CharField(max_length=default_length)
+    ip       = models.GenericIPAddressField(unique=True)
     sshkeys  = models.ManyToManyField('SSHKey', blank=True)
     owner    = models.ForeignKey(User)
     domain   = models.CharField(max_length=default_length, unique=True)

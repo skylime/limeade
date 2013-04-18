@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'^', include('limeade.cloud.urls.vnc')),
     url(r'^', include('limeade.cloud.urls.api')),
     url(r'^', include('limeade.cloud.urls.ssh')),
+    url(r'^', include('limeade.cloud.urls.export')),
 #   url(r'^', include('limeade.cloud.urls.node')),
 )
