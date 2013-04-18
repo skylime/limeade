@@ -5,3 +5,4 @@ lxml
 IPy
 South
 django-uni-form
+django-macaddress
